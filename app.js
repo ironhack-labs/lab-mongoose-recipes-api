@@ -49,7 +49,7 @@ app.post("/recipes", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error creating new recipe: " + error);
-            res.status(500).json("Error creating new recipe...");
+            res.status(500).json({ message: "Error creating new recipe..." });
         });
 });
 
@@ -62,7 +62,7 @@ app.get("/recipes", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error getting list of recipes..." + error);
-            res.status(500).json("Error getting list of recipes...");
+            res.status(500).json({ message: "Error getting list of recipes..." });
         });
 });
 
@@ -77,7 +77,7 @@ app.get("/recipes/:id", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error getting recipe..." + error);
-            res.status(500).json("Error getting recipe...");
+            res.status(500).json({ message: "Error getting recipe..." });
         });
 });
 
@@ -105,7 +105,7 @@ app.put("/recipes/:id", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error updating recipe..." + error);
-            res.status(500).json("Error updating recipe...");
+            res.status(500).json({ message: "Error updating recipe..." });
         });
 });
 
@@ -143,7 +143,7 @@ app.post("/users", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error creating new user: " + error);
-            res.status(500).json("Error creating new user...");
+            res.status(500).json({ message: "Error creating new user..." });
         });
 });
 
@@ -158,7 +158,7 @@ app.get("/users/:id", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error getting user..." + error);
-            res.status(500).json("Error getting user...");
+            res.status(500).json({ message: "Error getting user..." });
         });
 });
 
@@ -181,7 +181,7 @@ app.put("/users/:id", (req, res, next) => {
         })
         .catch((error) => {
             console.log("Error updating user..." + error);
-            res.status(500).json("Error updating user...");
+            res.status(500).json({ message: "Error updating user..." });
         });
 });
 
