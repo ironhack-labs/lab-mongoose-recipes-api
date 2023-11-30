@@ -59,6 +59,19 @@ app.post('/recipes', (req, res, next) => {
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+app.get('/recipes', (req, res) => {
+    Recipe.find()
+        .then((recipes) => {
+            console.log("Retrieved recipes:", recipes)
+
+            res.status(200).json(recipes)
+        })
+        .catch((error) => {
+            console.log("Error while retriveving recipes: ", error)
+
+            res.status(500).json({error: "Failed to retrieve recipes"})
+        })
+})
 
 
 //  Iteration 5 - Get a Single Recipe
