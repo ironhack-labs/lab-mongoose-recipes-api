@@ -48,11 +48,11 @@ app.post('/recipes', (req, res, next) => {
     Recipe.create(newRecipe)
         .then( (recipeFromDB) => {
             console.log(recipeFromDB)
-            res.status(201).send('A new recipe has been created!')
+            res.status(201).json('A new recipe has been created!')
         })
         .catch( (error) => {
             console.log("Error creating new recipe in the DB...", error);
-            res.send("Error creating a new recipe in the DB...");
+            res.status(500).json("Error creating a new recipe in the DB...");
         })
 })
 
