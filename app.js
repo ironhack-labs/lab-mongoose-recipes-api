@@ -87,7 +87,18 @@ app.put("/recipes/:id", (req, res) => {
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
+app.delete("/recipe/:id", (req, res) => {
 
+    const id = req.params._id
+
+    Recipe.findByIdAndDelete(id)
+    .then(() => {
+        res.status(204).send()
+    })
+    .catch((error) => {
+        console.log("Error deleting recipe..", error)
+    })
+})
 
 // BONUS
 //  Bonus: Iteration 9 - Create a Single User
