@@ -2,6 +2,8 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
+const Recipe = require("./models/Recipe.model")
+
 const app = express();
 
 // MIDDLEWARE
@@ -43,6 +45,7 @@ app.post("/recipes", (req, res) => {
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 app.get("/recipes", (req, res) => {
+    
     Recipe.find()
     .then((allRecipes) => {
         res.status(200).json(allRecipes)
@@ -54,7 +57,18 @@ app.get("/recipes", (req, res) => {
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get("/recipes/:id", (req, res) => {
 
+    const id = req.params._id
+
+    Recipe.findById(id)
+    .then((recipe) => {
+        res.status(200).json(recipe)
+    })
+    .catch((error) => {
+        console.log("Error getting recipe..", error)
+    })
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
