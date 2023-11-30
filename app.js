@@ -2,6 +2,8 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 
+const Recipe = require("./models/Recipe.model")
+
 const app = express();
 
 // MIDDLEWARE
@@ -29,6 +31,30 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
+app.post('/recipes', (req, res, next) => {
+    const {title, instructions, level, ingredients, image, duration, isArchived, created} = req.body
+
+    const newRecipe = {
+        title,
+        instructions,
+        level,
+        ingredients,
+        image,
+        duration,
+        isArchived,
+        created
+    }
+
+    Recipe.create(newRecipe)
+        .then( (recipeFromDB) => {
+            console.log(recipeFromDB)
+            res.status(201).send('A new recipe has been created!')
+        })
+        .catch( (error) => {
+            console.log("Error creating new recipe in the DB...", error);
+            res.send("Error creating a new recipe in the DB...");
+        })
+})
 
 
 //  Iteration 4 - Get All Recipes
