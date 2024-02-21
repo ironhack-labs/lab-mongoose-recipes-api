@@ -91,7 +91,7 @@ app.get("/recipes/:id", (req, res) => {
 
 app.put("/recipes/:id", (req, res) => {
   const recipeId = req.params.id;
-  Recipe.findByIdAndUpdate(recipeId)
+  Recipe.findByIdAndUpdate(recipeId,req.body {new: true})
     .then((updatedRecipe) => {
       console.log("Recipe updated ", updatedRecipe);
       res.status(200).json(updatedRecipe);
