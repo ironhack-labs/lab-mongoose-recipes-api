@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const Recipe = require("./models/Recipe.model");
+const User = require("./models/User.model");
 
 const app = express();
 
@@ -38,9 +39,11 @@ app.post("/recipes", (req, res) => {
     instructions: req.body.instructions,
     level: req.body.level,
     ingredients: req.body.ingredients,
+    cuisine: req.body.cuisine,
+    dishType: req.body.dishType,
+    creator: req.body.creator,
     image: req.body.image,
     duration: req.body.duration,
-    isAchived: req.body.isAchived,
     created: req.body.created,
   })
     .then((createdRecipe) => {
@@ -52,10 +55,28 @@ app.post("/recipes", (req, res) => {
     });
 });
 
+app.post("/users", (req, res) => {
+  User.create({
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password,
+    image: req.body.image,
+  })
+    .then((createdUser) => {
+      res.status(201).send(createdUser);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send();
+    });
+});
+
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 app.get("/recipes", (req, res) => {
   Recipe.find({})
+    .populate("creator")
     .then((recipes) => {
       res.status(200).send(recipes);
     })
@@ -71,9 +92,23 @@ app.get("/recipes/:id", (req, res) => {
   const id = req.params.id;
   console.log(id);
   Recipe.findById(id)
+    .populate("creator")
     .then((recipe) => {
       console.log(recipe);
       res.status(200).send(recipe);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send();
+    });
+});
+app.get("/users/:id", (req, res) => {
+  const id = req.params.id;
+  User.findById(id)
+    .populate("favorites")
+    .then((user) => {
+      console.log(user);
+      res.status(200).send(user);
     })
     .catch((error) => {
       console.error(error);
@@ -89,6 +124,23 @@ app.put("/recipes/:id", (req, res) => {
   Recipe.findByIdAndUpdate(id, data, { new: true })
     .then((updatedRecipe) => {
       res.status(200).send(updatedRecipe);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send();
+    });
+});
+
+app.put("/users/:id", (req, res) => {
+  console.log(req.body);
+  const id = req.params.id;
+  User.findByIdAndUpdate(
+    id,
+    { $push: { favorites: req.body.recipeId } },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      res.status(200).send(updatedUser);
     })
     .catch((error) => {
       console.error(error);
