@@ -38,14 +38,15 @@ app.get('/', (req, res) => {
 
 app.post("/recipes", (req, res ) => {
 
-    const {title, level, ingredients, cuisine, image, duration, creator, dishType } = req.body;
+    const {title, level, ingredients, cuisine, duration, instructions} = req.body;
 
-    Recipe.create({title, level, ingredients, cuisine, image, duration, creator, dishType,})
+    Recipe.create({title, level, ingredients, cuisine, duration, instructions} )
         .then((Createdrecipe) => {
            res.status(201).json(Createdrecipe);
         })
         .catch((error) => {
-            res.status(500).json({message: "Error as creating a new recipe"});
+            console.log(error);
+            res.status(500).json({ error:error});
 
         });
 });
@@ -54,18 +55,73 @@ app.post("/recipes", (req, res ) => {
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 
+app.get("/recipes", (req, res ) => {
+
+    Recipe.find()
+        .then( (allRecipes) => {
+            res.status(200).json(allRecipes);
+        })
+        .catch( (e) => {
+            console.log("Error while getting all recipes");
+            console.log(e)
+            res.status(500).json({message: "Error while getting all recipes"})
+        });
+});
+
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
 
+app.get("/recipes/:id", (req, res ) => {
+    
+
+    Recipe.findById(req.params.id)
+        .then( (recipe) => {
+            res.status(200).json(recipe);
+        })
+        .catch( (e) => {
+            console.log("Error while getting a recipe");
+            console.log(e)
+            res.status(500).json({message: "Error while getting a recipe"})
+        });
+})
+
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
 
+app.put("/recipes/:id", (req, res ) => {
+    
+
+    Recipe.findByIdAndUpdate(req.params.id, req.body, {new: true})
+        .then( (updatedRecipe) => {
+            res.status(200).json(updatedRecipe);
+        })
+        .catch( (e) => {
+            console.log("Error while updating a recipe");
+            console.log(e)
+            res.status(500).json({message: "Error while updating a recipe"})
+        });
+})
+
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
+
+app.delete("/recipes/:id", (req, res ) => {
+    
+
+    Recipe.findByIdAndDelete(req.params.id)
+        .then( () => {
+            res.status(204).send();
+        })
+        .catch( (e) => {
+            console.log("Error while deleting a recipe");
+            console.log(e)
+            res.status(500).json({message: "Error while deleting a recipe"})
+        });
+})
 
 
 // Start the server
