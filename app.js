@@ -65,12 +65,19 @@ app.get("/recipes/:id", (req, res) => {
     Recipe.findById({ _id: req.params.id })
         .then((singleRecipe) => res.status(200).json(singleRecipe))
         .catch((err) => {
-            res.status(500).json({ message: "Error while getting recipes" });
+            res.status(500).json({ message: "Error while getting a single recipe" });
         })
 })
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+app.put("/recipes/:id", (req, res) => {
+    Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then((updatedRecipe) => res.status(200).json(updatedRecipe))
+        .catch((err) => {
+            res.status(500).json({ message: "Error while updating recipe" })
+        })
+})
 
 
 //  Iteration 7 - Delete a Single Recipe
