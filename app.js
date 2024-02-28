@@ -1,17 +1,25 @@
 const express = require("express");
 const logger = require("morgan");
-
+const Recipe = require("./models/Recipe.model");
 const app = express();
-
+const router = require('express').Router();
 // MIDDLEWARE
 app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(express.json());
 
+app.use(express.urlencoded({ extend: false }));
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
+const mongoose = require('mongoose');
 
+const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
+
+mongoose
+  .connect(MONGODB_URI)
+  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch((err) => console.error("Error connecting to mongo", err));
 
 
 // ROUTES
@@ -23,15 +31,55 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
+/*const recipeRoutes = require('./routes/recipes.routes');
+app.use('/api', recipeRoutes);*/
+app.post("/recipes", async (req, res)=>{
+    const { title, instructions, level, ingredients, duration,isArchived, created_at } = req.body;
 
+    try {
+        const recipe = await Recipe.create({ title, instructions, level, ingredients, duration,isArchived, created_at });
 
+        res.status(200).json(recipe);
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+
+module.exports = app;
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+/*router.get("/recipes/:id",async (req, res)=>{
+    try{const { id } = req.params;
+
+    const recipe = await Recipe.findById(id);
+    res.status(200).json(recipe);
+}
+    catch(error){console.log(error);}
+});*/
+app.get('/recipes',(req, res) =>{
+    Recipe.find()
+    .then((allRecipes)=>{
+    res.status(200).json(allRecipes);
+    })
+    .catch((error) => {
+    res.status(500).json({message:"Error while getting all recipes"})
+    })
+    });
+
 
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get('/recipes:id',(req, res) =>{
+    Recipe.findById()
+    .then((recipe)=>{
+    res.status(200).json(recipe);
+    })
+    .catch((error) => {
+    res.status(500).json({message:"Error while getting a recipe"})
+    })
+    });
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
