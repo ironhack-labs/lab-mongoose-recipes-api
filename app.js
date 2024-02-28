@@ -93,11 +93,32 @@ app.get("/recipes/:id", (req, res) => {
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+app.put("/recipes/:id", (req, res) => {
+    Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then ((updatedRecipe) => {
+        console.log(updatedRecipe);
+        res.status(200).json(updatedRecipe);
+    })
+    .catch((e) => {
+        console.log(e);
+        res.status(500).json({ e: "Couldn't update this recipe" });
+    });
+})
 
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-
+app.delete("/recipes/:id", (req, res) => {
+    Recipe.findByIdAndDelete(req.params.id)
+    .then (() => {
+        res.status(204).send();
+        window.location.replace("/recipes");
+    })
+    .catch((e) => {
+        console.log(e);
+        res.status(500).json({ e: "Couldn't delete this recipe" });
+    });
+})
 
 
 // Start the server
