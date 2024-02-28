@@ -53,15 +53,21 @@ app.post("/recipes", (req, res) => {
 //  GET  /recipes route
 app.get("/recipes", (req, res) => {
     Recipe.find({})
-    .then((allRecipes) => res.status(200).json(allRecipes))
-    .catch((err) => {
-        res.status(500).json({ message: "Error while getting recipes" });
-    })
+        .then((allRecipes) => res.status(200).json(allRecipes))
+        .catch((err) => {
+            res.status(500).json({ message: "Error while getting recipes" });
+        })
 })
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get("/recipes/:id", (req, res) => {
+    Recipe.findById({ _id: req.params.id })
+        .then((singleRecipe) => res.status(200).json(singleRecipe))
+        .catch((err) => {
+            res.status(500).json({ message: "Error while getting recipes" });
+        })
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
