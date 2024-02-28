@@ -18,9 +18,9 @@ app.use(express.json());
 // DATABASE CONNECTION
 
 mongoose
-.connect(uri)
-.then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-.catch((err) => console.error("Error connecting to mongo", err))
+    .connect(uri)
+    .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+    .catch((err) => console.error("Error connecting to mongo", err))
 
 // ROUTES
 //  GET  / route - This is just an example route
@@ -31,7 +31,22 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post("/recipes", (req, res) => {
+    Recipe.create({
+        title: req.body.title,
+        instructions: req.body.instructions,
+        level: req.body.level,
+        ingredients: req.body.ingredients,
+        image: req.body.image,
+        duration: req.body.duration,
+        isArchived: req.body.isArchived,
+        created: req.body.created
+    })
+        .then((createdRecipe) => res.status(201).json(createdRecipe))
+        .catch((err) => {
+            res.status(500).json({ error: "Error while creating new recipe" });
+        })
+})
 
 
 //  Iteration 4 - Get All Recipes
