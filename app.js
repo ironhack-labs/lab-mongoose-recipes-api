@@ -11,7 +11,7 @@ app.use(express.json());
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 const mongoose = require("mongoose");
-const Recipe = require("./models/Recipe.model.js"); // Recipe schema
+const Recipe = require("./models/User.model.js"); // Recipe schema
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
