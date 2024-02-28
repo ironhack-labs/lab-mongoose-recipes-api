@@ -11,7 +11,8 @@ app.use(express.json());
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 const mongoose = require("mongoose");
-const Recipe = require("./models/User.model.js"); // Recipe schema
+const Recipe = require("./models/Recipe.model.js"); // Recipe schema
+const User = require("./models/User.model.js"); // User schema
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
@@ -42,6 +43,7 @@ app.post("/recipes", (req, res, next) => {
     isArchived,
     created,
   } = req.body;
+
   const newRecipe = {
     title: title,
     instructions: instructions,
@@ -101,7 +103,7 @@ app.put("/recipes/:id", (req, res, next) => {
     isArchived: req.body.isArchived,
     created: req.body.created,
   };
-  Recipe.findByIdAndUpdate({ _id: id }, update, {new: true})
+  Recipe.findByIdAndUpdate({ _id: id }, update, { new: true })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -113,17 +115,32 @@ app.put("/recipes/:id", (req, res, next) => {
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 app.delete("/recipes/:id", (req, res, next) => {
-    const { id } = req.params;
-    Recipe.deleteOne({_id: id})
-        .then((result) => {
-            res.status(204).json(result)
-        }).catch((err) => {
-            res.status(500).json({ message: "Error deleting" });
-        });
-})
+  const { id } = req.params;
+  Recipe.deleteOne({ _id: id })
+    .then((result) => {
+      res.status(204).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error deleting" });
+    });
+});
+
+// create new user
+app.post("/user", (req, res, next) => {
+  const newUser = {
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password,
+    image: req.body.image,
+  };
+
+  User.create(newUser)
+  .then((user) => res.status(201).json(user))
+  .catch((err) => res.status(500).json(err));
 
 
-
+});
 
 // Start the server
 app.listen(3000, () => console.log("My first app listening on port 3000!"));

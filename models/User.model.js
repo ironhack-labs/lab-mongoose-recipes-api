@@ -1,23 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const recipe = new Schema({
-  title: { type: String, required: true, unique: true},
-  instructions: { type: String, required: true },
-  level: {
-    type: String,
-    enum: ["Easy Peasy", "Amateur Chef", "UltraPro Chef"],
-  },
-  ingredients: { type: [String] },
+const user = new Schema({
+  email: { type: String, required: true, unique: true },
+  firstName: { type: String, required: true, minLength: 2 },
+  lastName: { type: String, required: true, minLength: 2 },
+  password: { type: String, required: true, minLength: 8 },
+
   image: {
     type: String,
-    default: "https://images.media-allrecipes.com/images/75131.jpg",
+    default: "https://xsgames.co/randomusers/assets/avatars/pixel/44.jpg",
   },
-  duration: { type: Number, min: 0 },
-  isArchived: { type: Boolean, default: false },
-  created: { type: Date, default: Date.now },
 });
 
-const Recipe = mongoose.model("Recipe", recipe)
+const User = mongoose.model("User", user);
 
-module.exports = Recipe
+module.exports = User;
