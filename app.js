@@ -63,8 +63,27 @@ app.get("/recipes", (req, res) => {
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
+app.get("/recipes/:id", (req, res) => {
+  Recipe.findById(req.params.id)
+    .then((recipe) => {
+      res.status(200).json(recipe);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error getting single recipe" });
+    });
+});
+
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+app.put("/recipes/:id", (req, res) => {
+  Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updateRecipe) => {
+      res.status(200).json(updateRecipe);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error while updating single recipe" });
+    });
+});
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
