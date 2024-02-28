@@ -1,7 +1,10 @@
 const express = require("express");
 const logger = require("morgan");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
+const uri = process.env.MONGODB_URI
 
 // MIDDLEWARE
 app.use(logger("dev"));
@@ -12,7 +15,10 @@ app.use(express.json());
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 
-
+mongoose
+.connect(uri)
+.then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+.catch((err) => console.error("Error connecting to mongo", err))
 
 // ROUTES
 //  GET  / route - This is just an example route
