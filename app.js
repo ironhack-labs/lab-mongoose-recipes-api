@@ -126,7 +126,7 @@ app.delete("/recipes/:id", (req, res, next) => {
 });
 
 // create new user
-app.post("/user", (req, res, next) => {
+app.post("/users", (req, res, next) => {
   const newUser = {
     email: req.body.email,
     firstName: req.body.firstName,
