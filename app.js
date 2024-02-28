@@ -29,9 +29,36 @@ app.get("/", (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post("/recipes", (req, res) => {
+  Recipe.create({
+    title: req.body.title,
+    level: req.body.level,
+    ingredients: req.body.ingredients,
+    cuisine: req.body.cuisine,
+    dishType: req.body.dishType,
+    image: req.body.image,
+    duration: req.body.duration,
+    creator: req.body.creator,
+  })
+    .then((createdRecipe) => {
+      res.status(201).json(createdRecipe);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error creating a new recipe" });
+    });
+});
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+
+app.get("/recipes", (req, res) => {
+  Recipe.find()
+    .then((allRecipes) => {
+      res.status(200).json(allRecipes);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: "Error getting list of all recipes" });
+    });
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
