@@ -46,7 +46,7 @@ app.post("/recipes", (req, res) => {
     })
         .then((newRecipe) => {
             // console.log(newRecipe);
-            res.status(200).json(newRecipe);
+            res.status(201).json(newRecipe);
         })
         .catch((e) => {
             // console.log(e);
