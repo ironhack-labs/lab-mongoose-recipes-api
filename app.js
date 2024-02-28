@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const Recipe = require("./models/Recipe.model");
+const User = require("./models/User.model");
 
 const app = express();
 
@@ -91,6 +92,21 @@ app.delete("/recipes/:id", (req, res) => {
     })
     .catch((error) => {
       res.status(500).json({ error: "Deleting recipe failed" });
+    });
+});
+
+app.post("/users", (req, res, next) => {
+  User.create({
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password,
+  })
+    .then((createdUser) => {
+      res.status(201).json(createdUser);
+    })
+    .catch((error) => {
+      res.status(500).json({ error: "Failed to create the user" });
     });
 });
 
