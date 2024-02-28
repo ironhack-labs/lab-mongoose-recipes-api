@@ -44,14 +44,20 @@ app.post("/recipes", (req, res) => {
     })
         .then((createdRecipe) => res.status(201).json(createdRecipe))
         .catch((err) => {
-            res.status(500).json({ error: "Error while creating new recipe" });
+            res.status(500).json({ message: "Error while creating new recipe" });
         })
 })
 
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+app.get("/recipes", (req, res) => {
+    Recipe.find({})
+    .then((allRecipes) => res.status(200).json(allRecipes))
+    .catch((err) => {
+        res.status(500).json({ message: "Error while getting recipes" });
+    })
+})
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
