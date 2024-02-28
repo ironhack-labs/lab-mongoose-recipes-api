@@ -34,3 +34,7 @@ const recipeSchema = new Schema({
         default: today
     }
 })
+
+const Recipe = mongoose.model("Recipe", recipeSchema)
+
+module.exports = Recipe;

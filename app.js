@@ -3,6 +3,8 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const Recipe = require("./models/Recipe.model")
+
 const app = express();
 const uri = process.env.MONGODB_URI
 
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
+
 
 
 //  Iteration 4 - Get All Recipes
