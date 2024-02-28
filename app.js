@@ -1,6 +1,8 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const recipeModel = require("./models/Recipe.model");
+
 const app = express();
 
 // MIDDLEWARE
@@ -26,19 +28,73 @@ app.get("/", (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post("/recipes", async (req, res) => {
+  try {
+    const recipe = req.body;
+    const newRecipe = new recipeModel(recipe);
+    await newRecipe.save();
+    res.json({ message: "new recipe created" });
+  } catch (er) {
+    console.error(er);
+  }
+});
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+app.get("/recipes", async (req, res) => {
+  try {
+    const allRecipes = await recipeModel.find({});
+    res.json(allRecipes);
+  } catch (er) {
+    console.log(er);
+  }
+});
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get("/recipes/:recipeId", async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const recipe = await recipeModel.findById(recipeId);
+    if (recipe) {
+      res.json(recipe);
+    } else {
+      res.json({ message: "recipe not found" });
+    }
+  } catch (er) {
+    console.log(er);
+  }
+});
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
-
+app.put("/recipes/:recipeId", async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const recipe = req.body;
+    const updatedRecipe = await recipeModel.findByIdAndUpdate(recipeId, recipe);
+    if (updatedRecipe) {
+      res.json({ message: "recipe updated" });
+    } else {
+      res.json({ message: "recipe not found" });
+    }
+    await updatedRecipe.save();
+  } catch (er) {
+    console.error(er);
+  }
+});
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-
+app.delete("/recipes/:recipeId", async (req, res) => {
+  try {
+    const { recipeId } = req.params;
+    const recipe = await recipeModel.findByIdAndDelete(recipeId);
+    if (recipe) {
+      res.json({ message: "recipe deleted" });
+    } else {
+      res.json({ message: "recipe not found" });
+    }
+  } catch (er) {
+    console.log(er);
+  }
+});
 // Start the server
 app.listen(3000, () => {
   console.log("connected to port 3000");
