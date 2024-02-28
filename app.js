@@ -8,7 +8,6 @@ app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(express.json());
 
-
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 const mongoose = require("mongoose");
@@ -16,23 +15,21 @@ const mongoose = require("mongoose");
 const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
 mongoose
-  .connect(MONGODB_URI)
-  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-  .catch((err) => console.error("Error connecting to mongo", err));
-
-
-
+    .connect(MONGODB_URI)
+    .then((x) =>
+        console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+    )
+    .catch((err) => console.error("Error connecting to mongo", err));
 
 // ROUTES
 //  GET  / route - This is just an example route
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
     res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 });
 
-
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-app.post("/recipes", (req, res)=>{
+app.post("/recipes", (req, res) => {
     Recipe.create({
         title: req.body.title,
         instructions: req.body.instructions,
@@ -43,73 +40,68 @@ app.post("/recipes", (req, res)=>{
         isArchived: req.body.isArchived,
         created: req.body.created,
     })
-    .then((createdRecipe)=>{
-        console.log("Recipe is created", createdRecipe);
-        res.status(201).send(createdRecipe);
-    })
-    .catch((error)=>{
-        console.log(error);
-        res.status(500).send({error: 'Failed'})
-    })
-})
+        .then((createdRecipe) => {
+            console.log("Recipe is created", createdRecipe);
+            res.status(201).send(createdRecipe);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: "Failed" });
+        });
+});
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-app.get('/recipes', (req, res)=>{
+app.get("/recipes", (req, res) => {
     Recipe.find()
-    .then((recipes)=>{
-        res.status(200).send(recipes)
-    })
-    .catch((error)=>{
-        res.status(500).send({error: 'failed'})
-    })
-})
+        .then((recipes) => {
+            res.status(200).send(recipes);
+        })
+        .catch((error) => {
+            res.status(500).send({ error: "failed" });
+        });
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-app.get("/recipes/:recipeId", (req, res)=>{
-    
-
+app.get("/recipes/:recipeId", (req, res) => {
     Recipe.findById(req.params.recipeId)
-    .then((recipe)=>{
-        res.status(200).send(recipe)
-    })
-    .catch((error)=>{
-        res.status(500).send({error: 'failed to get the sinle'})
-    })
-})
+        .then((recipe) => {
+            res.status(200).send(recipe);
+        })
+        .catch((error) => {
+            res.status(500).send({ error: "failed to get the sinle" });
+        });
+});
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
-app.put("/recipes/:recipeId", (req, res)=>{
-    Recipe.findByIdAndUpdate(req.params.recipeId, req.body, {new: true})
-    .then((updatedRecipes)=>{
-        res.status(200).send(updatedRecipes)
-    })
-    .catch((error)=>{
-        console.log(error)
-        res.status(500).send({error: 'failed to update'})
-    })
-})
+app.put("/recipes/:recipeId", (req, res) => {
+    Recipe.findByIdAndUpdate(req.params.recipeId, req.body, { new: true })
+        .then((updatedRecipes) => {
+            res.status(200).send(updatedRecipes);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(500).send({ error: "failed to update" });
+        });
+});
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-app.delete("/recipes/:recipeId", (req, res)=>{
+app.delete("/recipes/:recipeId", (req, res) => {
     Recipe.findByIdAndDelete(req.params.recipeId)
-    .then(()=>{
-        res.status(200).send({message: 'recipe deleted'})
-    })
-    .catch((error)=>{
-        res.status(500).send({message: 'failed to delete'})
-    })
-})
-
+        .then(() => {
+            res.status(204).send({ message: "recipe deleted" });
+        })
+        .catch((error) => {
+            res.status(500).send({ message: "failed to delete" });
+        });
+});
 
 // Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
-
-
+app.listen(3000, () => console.log("My first app listening on port 3000!"));
 
 //❗️DO NOT REMOVE THE BELOW CODE
 module.exports = app;
