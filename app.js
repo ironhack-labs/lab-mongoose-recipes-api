@@ -13,6 +13,7 @@ app.use(express.json());
 const mongoose = require("mongoose");
 const Recipe = require("./models/Recipe.model.js"); // Recipe schema
 const User = require("./models/User.model.js"); // User schema
+app.use(express.json());
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
@@ -41,6 +42,7 @@ app.post("/recipes", (req, res, next) => {
     image,
     duration,
     isArchived,
+    creator,
     created,
   } = req.body;
 
@@ -52,6 +54,7 @@ app.post("/recipes", (req, res, next) => {
     image: image,
     duration: duration,
     isArchived: isArchived,
+    creator: creator,
     created: created,
   };
 
@@ -64,6 +67,7 @@ app.post("/recipes", (req, res, next) => {
 //  GET  /recipes route
 app.get("/recipes", (req, res, next) => {
   Recipe.find()
+    .populate("creator")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -80,6 +84,7 @@ app.get("/recipes/:id", (req, res, next) => {
   const { id } = req.params;
 
   Recipe.findOne({ _id: id })
+    .populate("creator")
     .then((details) => {
       res.status(200).json(details);
     })
@@ -136,10 +141,44 @@ app.post("/users", (req, res, next) => {
   };
 
   User.create(newUser)
-  .then((user) => res.status(201).json(user))
-  .catch((err) => res.status(500).json(err));
+    .then((user) => res.status(201).json(user))
+    .catch((err) => res.status(500).json(err));
+});
 
+app.get("/users", (req, res, next) => {
+  User.find()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
+app.get("/users/:id", (req, res, next) => {
+  User.findById({ _id: req.params.id })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
+
+// Update user
+app.put("/users/:id", (req, res, next) => {
+  console.log(req.body)
+  User.findByIdAndUpdate(
+    { _id: req.params.id },
+    { $push: { favorites: "65df3fc819bc61894aacf414" } },
+    { new: true }
+  )
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
 });
 
 // Start the server

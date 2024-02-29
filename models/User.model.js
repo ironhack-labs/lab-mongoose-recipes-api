@@ -11,6 +11,7 @@ const user = new Schema({
     type: String,
     default: "https://xsgames.co/randomusers/assets/avatars/pixel/44.jpg",
   },
+  favorites: {type: [mongoose.Schema.Types.ObjectId], ref: "Recipe", default: []}
 });
 
 const User = mongoose.model("User", user);

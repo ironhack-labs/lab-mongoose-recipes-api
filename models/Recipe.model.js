@@ -15,6 +15,7 @@ const recipe = new Schema({
   },
   duration: { type: Number, min: 0 },
   isArchived: { type: Boolean, default: false },
+  creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
   created: { type: Date, default: Date.now },
 });
 
