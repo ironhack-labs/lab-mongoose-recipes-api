@@ -90,7 +90,7 @@ app.get("/recipes/:id", (req, res) => {
 //  PUT  /recipes/:id route
 app.put("/recipes/:id", (req, res)=>{
     const {id} = req.params;
-    const {title, instructions, level, ingredients, image, duration, isArchived, created} = req.body;
+    const {title, instructions, level, ingredients, image, duration} = req.body;
 
     Recipe.findByIdAndUpdate(id, {
         title,
@@ -116,7 +116,7 @@ app.delete("/recipes/:id", (req, res)=>{
 
     Recipe.findByIdAndDelete(id)
     .then(deletedRecipe => {
-        res.status(200).json(deletedRecipe)
+        res.status(204).json(deletedRecipe)
     })
     .catch((err)=>{
         res.status(500).json({error: "Failed to delete recipe"})
