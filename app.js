@@ -63,7 +63,7 @@ app.get("/recipes", (req, res) => {
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
-app.put("/recipes/:id", (req, res) => {
+app.get("/recipes/:id", (req, res) => {
   Recipe.findById(req.params.id)
     .then((recipe) => {
       res.status(200).json(recipe);
@@ -76,7 +76,7 @@ app.put("/recipes/:id", (req, res) => {
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
-app.get("/recipes/:id", (req, res) => {
+app.put("/recipes/:id", (req, res) => {
   Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((updatedRecipe) => {
       res.status(200).json(updatedRecipe);
@@ -88,7 +88,7 @@ app.get("/recipes/:id", (req, res) => {
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
-app.put("/recipes/:id", (req, res) => {
+app.delete("/recipes/:id", (req, res) => {
   Recipe.findByIdAndDelete(req.params.id)
     .then(() => {
       res.status(204).send();
