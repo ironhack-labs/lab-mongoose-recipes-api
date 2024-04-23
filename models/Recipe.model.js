@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 // Schema - describes and enforces the structure of the documents
 const recipeSchema = new Schema({
   title: { type: String, required: true, unique: true },
-  isntructions: { type: String, required: true },
+  instructions: { type: String, required: true },
   level: {
     type: String,
     required: true,
