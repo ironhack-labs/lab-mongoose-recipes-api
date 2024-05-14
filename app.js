@@ -51,12 +51,12 @@ app.post("/", (req, res) => {
     created
   )
     .then((response) => {
-      console.log("Entry created ->", response);
+      console.log("Recipe created ->", response);
       res.status(201).json(response);
     })
     .catch((error) => {
-      console.error("Error while creating entry ->", error);
-      res.status(500).json({ error: "Failed to create the entry" });
+      console.error("Error while creating recipe ->", error);
+      res.status(500).json({ error: "Failed to create the recipe" });
     });
 });
 
@@ -66,12 +66,12 @@ app.get("/", (req, res) => {
   Recipe.find({})
     .then((recipe) => res.send(recipe))
     .then((response) => {
-      console.log("Entry created ->", response);
+      console.log("Success ->", response);
       res.status(201).json(response);
     })
     .catch((error) => {
-      console.error("Error while creating entry ->", error);
-      res.status(500).json({ error: "Failed to create the entry" });
+      console.error("Error ->", error);
+      res.status(500).json({ error: "Failed to fetch the info" });
     });
 });
 
@@ -79,7 +79,16 @@ app.get("/", (req, res) => {
 //  GET  /recipes/:id route
 app.get("/:id", (req, res) => {
   const { id } = req.params;
-  Recipe.findById(id).then((recipe) => res.send(recipe));
+  Recipe.findById(id)
+    .then((recipe) => res.send(recipe))
+    .then((response) => {
+      console.log("Recipe found ->", response);
+      res.status(201).json(response);
+    })
+    .catch((error) => {
+      console.error("Error ->", error);
+      res.status(500).json({ error: "Failed to fetch the recipe" });
+    });
 });
 
 //  Iteration 6 - Update a Single Recipe
