@@ -23,33 +23,10 @@ mongoose
   )
   .catch((err) => console.error("Error connecting to mongo", err));
 
-// ROUTES
-//  GET  / route - This is just an example route
-
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
 app.post("/", (req, res) => {
-  const {
-    title,
-    instructions,
-    level,
-    ingredients,
-    image,
-    duration,
-    isArchived,
-    created,
-  } = req.body;
-
-  Recipe.create(
-    title,
-    instructions,
-    level,
-    ingredients,
-    image,
-    duration,
-    isArchived,
-    created
-  )
+  Recipe.create(req.body)
     .then((response) => {
       console.log("Recipe created ->", response);
       res.status(201).json(response);
@@ -95,30 +72,7 @@ app.get("/:id", (req, res) => {
 //  PUT  /recipes/:id route
 app.put("/:id", (req, res) => {
   const { id } = req.params;
-  const {
-    title,
-    instructions,
-    level,
-    ingredients,
-    image,
-    duration,
-    isArchived,
-    created,
-  } = req.body;
-  Recipe.findByIdAndUpdate(
-    id,
-    {
-      title,
-      instructions,
-      level,
-      ingredients,
-      image,
-      duration,
-      isArchived,
-      created,
-    },
-    { new: true }
-  )
+  Recipe.findByIdAndUpdate(id, req.body, { new: true })
     .then((response) => {
       console.log("Recipe updated ->", response);
       res.status(200).send(response);
@@ -131,8 +85,8 @@ app.put("/:id", (req, res) => {
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-app.delete("./:id", (req, res) => {
-  const id = req.params;
+app.delete("/:id", (req, res) => {
+  const { id } = req.params;
 
   Recipe.findByIdAndDelete(id)
     .then((response) => {
@@ -141,7 +95,7 @@ app.delete("./:id", (req, res) => {
     })
     .catch((error) => {
       console.error("Error while deleting recipe ->", error);
-      res.status(500).send({ error: "Failed to deleting the recipe" });
+      res.status(500).send({ error: "Failed to deletE the recipe" });
     });
 });
 
