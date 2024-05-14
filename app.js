@@ -14,7 +14,6 @@ const mongoose = require("mongoose");
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
-const recipe = require("./models/Recipe.model");
 const Recipe = require("./models/Recipe.model");
 
 mongoose
@@ -26,10 +25,9 @@ mongoose
 
 // ROUTES
 //  GET  / route - This is just an example route
-app.get("/", (req, res) => {
-  res.send("<h1>LAB | Express Mongoose Recipes</h1>");
-});
 
+//  Iteration 3 - Create a Recipe route
+//  POST  /recipes route
 app.post("/", (req, res) => {
   const {
     title,
@@ -62,11 +60,20 @@ app.post("/", (req, res) => {
     });
 });
 
-//  Iteration 3 - Create a Recipe route
-//  POST  /recipes route
-
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+app.get("/", (req, res) => {
+  Recipe.find({})
+    .then((recipe) => res.send(recipe))
+    .then((response) => {
+      console.log("Entry created ->", response);
+      res.status(201).json(response);
+    })
+    .catch((error) => {
+      console.error("Error while creating entry ->", error);
+      res.status(500).json({ error: "Failed to create the entry" });
+    });
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
