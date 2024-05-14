@@ -77,6 +77,10 @@ app.get("/", (req, res) => {
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get("/:id", (req, res) => {
+  const { id } = req.params;
+  Recipe.findById(id).then((recipe) => res.send(recipe));
+});
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
