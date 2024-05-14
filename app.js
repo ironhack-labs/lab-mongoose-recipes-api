@@ -93,6 +93,41 @@ app.get("/:id", (req, res) => {
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+app.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const {
+    title,
+    instructions,
+    level,
+    ingredients,
+    image,
+    duration,
+    isArchived,
+    created,
+  } = req.body;
+  Recipe.findByIdAndUpdate(
+    id,
+    {
+      title,
+      instructions,
+      level,
+      ingredients,
+      image,
+      duration,
+      isArchived,
+      created,
+    },
+    { new: true }
+  )
+    .then((response) => {
+      console.log("Recipe updated ->", response);
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      console.error("Error while updating recipe ->", error);
+      res.status(500).send({ error: "Failed to update the recipe" });
+    });
+});
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
