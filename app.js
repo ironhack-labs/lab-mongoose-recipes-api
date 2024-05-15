@@ -41,15 +41,26 @@ app.post("/recipes", (req, res) => {
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-app.get("/recipes", (req, res) => {
-  Recipe.find()
-    .then((recipes) => {
-      res.status(200).json(recipes);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Error getting all recipes" });
-    });
+// app.get("/recipes", (req, res) => {
+//   Recipe.find()
+//     .then((recipes) => {
+//       res.status(200).json(recipes);
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ message: "Error getting all recipes" });
+//     });
+// });
+app.get("/recipes", async (req, res) => {
+  try {
+    const recipes = await Recipe.find();
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting all recipes" });
+  }
 });
+
+
+
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
