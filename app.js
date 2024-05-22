@@ -131,7 +131,7 @@ app.delete("/recipes/:recipeId", async (req, res) => {
   const { recipeId } = req.params;
   try {
     await Recipe.findByIdAndDelete(recipeId);
-    res.status(204);
+    res.status(204).send;
   } catch (error) {
     res.status(500).json(serverErrorMsg);
   }
