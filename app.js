@@ -31,10 +31,10 @@ app.get('/', (req, res) => {
 
 app.post('/recipes', (req, res) => {
 
-    const { title, instructions, level, ingredients, image, duration, isArchived } = req.body
+    const { title, instructions, level, ingredients, image, duration, isArchived, timestamps } = req.body
 
     Recipe
-        .create({ title, instructions, level, ingredients, image, duration, isArchived })
+        .create({ title, instructions, level, ingredients, image, duration, isArchived, timestamps })
         .then(newRecipe => res.sendStatus(201))
         .catch(err => res.json({ code: 500, errorDetails: err }))
 
@@ -56,12 +56,12 @@ app.get('/recipes', (req, res) => {
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
-app.get('/recipes/:id', (req, res) => {
+app.get('/recipes/:_id', (req, res) => {
 
-    const { recipe_id } = req.params
+    const { _id } = req.params
 
     Recipe
-        .findById(recipe_id)
+        .findById(_id)
         .then(recipe => res.json(recipe))
         .catch(err => res.json({ code: 500, errorDetails: err }))
 
@@ -70,13 +70,13 @@ app.get('/recipes/:id', (req, res) => {
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
-app.put('/recipes/:id', (req, res) => {
+app.put('/recipes/:_id', (req, res) => {
 
-    const { recipe_id } = req.params
-    const { title, instructions, level, ingredients, image, duration, isArchived } = req.body
+    const { _id } = req.params
+    const { title, instructions, level, ingredients, image, duration, isArchived, timestamps } = req.body
 
     Recipe
-        .findByIdAndUpdate(recipe_id, { title, instructions, level, ingredients, image, duration, isArchived })
+        .findByIdAndUpdate(_id, { title, instructions, level, ingredients, image, duration, isArchived, timestamps })
         .then(updatedRecipe => res.sendStatus(204))
         .catch(err => res.json({ code: 500, errorDetails: err }))
 
@@ -85,12 +85,12 @@ app.put('/recipes/:id', (req, res) => {
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
-app.delete('/recipes/:id ', (req, res) => {
+app.delete('/recipes/:_id ', (req, res) => {
 
-    const { recipe_id } = req.params
+    const { _id } = req.params
 
     Recipe
-        .findByIdAndDelete(recipe_id)
+        .findByIdAndDelete(_id)
         .then(() => res.sendStatus(204))
         .catch(err => res.json({ code: 500, errorDetails: err }))
 })
