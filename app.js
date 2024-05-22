@@ -18,8 +18,9 @@ mongoose.connect("mongodb://127.0.0.1:27017/express-mongoose-recipes-dev")
 })
 .catch((error) => console.log("Error connecting to mongo", error))
 
-// importamos el modelo Recipe
+// importamos nuestros models
 const Recipe = require("./models/Recipe.model")
+const User = require("./models/User.model")
 
 // ROUTES
 //  GET  / route - This is just an example route
@@ -33,7 +34,7 @@ app.get('/', (req, res) => {
 app.post("/recipes", async (req, res) => {
     try {
         await Recipe.create({
-            name: req.body.name,
+            title: req.body.title,
             instructions: req.body.instructions,
             level: req.body.level,
             ingredients: req.body.ingredients,
@@ -80,7 +81,7 @@ app.get("/recipes/:id", async (req, res) => {
 app.put("/recipes/:id", async (req, res) => {
     try {
         await Recipe.findByIdAndUpdate(req.params.id, {
-            name: req.body.name,
+            title: req.body.title,
             instructions: req.body.instructions,
             level: req.body.level,
             ingredients: req.body.ingredients,
@@ -108,6 +109,23 @@ app.delete("/recipes/:id", async (req, res) => {
     }
 })
 
+// Iteration 8 - Create a single User
+app.post("/users", async (req, res) => {
+    try {
+        await User.create({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: req.body.password,
+            image: req.body.image
+        }) 
+        res.json("user created")
+    } catch (error) {
+        console.log(error);
+        res.json("Internal server error")
+    }
+    
+})
 
 // Start the server
 app.listen(3000, () => console.log('My first app listening on port 3000!'));

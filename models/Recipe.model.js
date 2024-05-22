@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 
 // Schema
 const recipeSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         unique: true
