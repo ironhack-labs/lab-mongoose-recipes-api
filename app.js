@@ -7,12 +7,23 @@ const app = express();
 app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(express.json());
+// app.js
+//...
+// ...
 
 
 // Iteration 1 - Connect to MongoDB
-// DATABASE CONNECTION
+// DATABASE CONNECTION)
 
+const mongoose = require("mongoose");
+const Recipe = require("./models/Recipe.model");
 
+const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
+
+mongoose
+    .connect(MONGODB_URI)
+    .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+    .catch((err) => console.error("Error connecting to mongo", err));
 
 // ROUTES
 //  GET  / route - This is just an example route
@@ -25,16 +36,51 @@ app.get('/', (req, res) => {
 //  POST  /recipes route
 
 
+app.post('/recipes', (req, res) => {
+
+    const { title, instructions, level, ingredients, image, duration, isArchived, created } = req.body
+
+    Recipe
+        .create({ title, instructions, level, ingredients, image, duration, isArchived, created })
+        .then(newRecipe => res.sendStatus(201))
+        .catch(err => res.json({ code: 500, errorDetails: err }))
+})
+
+
+
+
+
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+
+app.get('/recipes', (req, res) => {
+    Recipe
+        .find()
+        .then(allRecipes => res.json(allRecipes))
+        .catch(err => res.json({ code: 500, errDetaisl: err }))
+})
+
 
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get('/recipes/:id', (req, res) => {
+    Recipe
+        .findById(_id)
+        .then(allRecipes => res.json(allRecipes))
+        .catch(err => res.json({ code: 500, errDetaisl: err }))
+})
+
+
+
 
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+
+
+
+
 
 
 //  Iteration 7 - Delete a Single Recipe
