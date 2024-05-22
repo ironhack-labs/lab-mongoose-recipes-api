@@ -30,6 +30,7 @@ app.post('/api/recipes', (req, res) => {
     const { title, instructions, level, ingredients, image, duration, isArchived } = req.body
 
     Recipe
+
         .create({ title, instructions, level, ingredients, image, duration, isArchived })
         .then(newRecipe => res.json(newRecipe))
         .catch(err => res.json({ code: 500, errorDEtails: err }))
@@ -41,6 +42,7 @@ app.post('/api/recipes', (req, res) => {
 app.get('/api/recipes', (req, res) => {
 
     Recipe
+
         .find()
         .then(allRecipes => res.json(allRecipes))
         .catch(err => res.json({ code: 500, errorDetails: err }))
@@ -51,21 +53,45 @@ app.get('/api/recipes', (req, res) => {
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 app.get('/api/recipes/:id', (req, res) => {
-    const { recipe_id } = req.params
+
+    const { id } = req.params
 
     Recipe
-        .findById(recipe_id)
+
+        .findById(id)
         .then(recipe => res.json(recipe))
-        .catch(err => res.json({ code: 500, errorDETAILS: ERR }))
+        .catch(err => res.json({ code: 500, errorDetails: err }))
 })
 
 
-//  Iteration 6 - Update a Single Recipe
+//  Iteration 6 - Update a Single Recipe    
 //  PUT  /recipes/:id route
+app.put('/api/recipes/:id', (req, res) => {
+
+    const { id } = req.params
+    const { title, instructions, level, ingredients, image, duration, isArchived } = req.body
+
+    Recipe
+        .findByIdAndUpdate(id, { title, instructions, level, ingredients, image, duration, isArchived })
+        .then(updatedRecipe => res.sendStatus(204))
+        .catch(err => res.json({ code: 500, errorDetails: err }))
+
+})
 
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
+
+app.delete('/api/recipes/:id', (req, res) => {
+
+    const { id } = req.params
+
+    Recipe
+        .findByIdAndDelete(id)
+        .then(() => res.sendStatus(204))
+        .catch(err => res.json({ code: 500, errorDetails: err }))
+
+})
 
 
 
