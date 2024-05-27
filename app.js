@@ -29,23 +29,59 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post("/recipes", (req, res)=>{
+    Recipe.create(req.body)
+    .then((createdRecipe)=>{
+        res.status(201).json(createdRecipe)    })
+        .catch((error)=> res.status(500).json())
+})
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+app.get("/recipes", (req, res)=>{
+    Recipe.find()
+    .then((allRecipes)=>{
+        res.status(200).json(allRecipes);
+    })
+    .catch((error)=>{
+        res.status(500).json()
+    })
+})
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get("/recipe/:id",(req, res)=>{
+    const {id} = req.params;
+    Recipe.findById(id)
+    .then((recipe)=>{
+        res.status(200).json(recipe)
+    })
+    .catch((error)=>{
+        res.status(500).json()
+    })
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
-
+app.put("/recipes/:id", (req, res)=>{
+    Recipe.findByIdAndUpdate(req.params.id, req.body, {new:true})
+    .then((updatedRecipe)=>{
+        res.status(200).json(updatedRecipe)
+    })
+    .catch((error)=>{res.status(500).json()})
+})
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-
+app.delete("/recipes/:id", (req, res)=>{
+    Recipe.findByIdAndDelete(req.params.id)
+    .then(()=>{
+        res.status(204).send
+    })
+    .catch((error)=>{
+        res.status(500).json()
+    })
+})
 
 
 // Start the server
