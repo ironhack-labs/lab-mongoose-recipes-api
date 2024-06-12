@@ -1,51 +1,30 @@
 const express = require("express");
-const logger = require("morgan");
+const morgan = require("morgan");
+const logger = morgan("dev");
+
+//import function that connects to the database
+const connectDB = require("./config/mongoose.connection.js");
+
+//import routers from routes files
+const recipeRouter = require("./routes/recipes.routes.js");
+
+//import all env from env file
+//now all values are accessible by referring first to process.env.NAMEOFVARIABLE
+require("dotenv").config();
 
 const app = express();
 
-// MIDDLEWARE
-app.use(logger("dev"));
-app.use(express.static("public"));
+app.use(logger);
+//parses request and response in case of JSON body
 app.use(express.json());
 
+//define routes
+app.use("/recipes", recipeRouter);
 
-// Iteration 1 - Connect to MongoDB
-// DATABASE CONNECTION
+//calling function to connect to MongoDB with Mongoose
+connectDB();
 
-
-
-// ROUTES
-//  GET  / route - This is just an example route
-app.get('/', (req, res) => {
-    res.send("<h1>LAB | Express Mongoose Recipes</h1>");
+app.listen(process.env.PORT, () => {
+  console.clear();
+  console.log("Server up and running on port: " + process.env.PORT);
 });
-
-
-//  Iteration 3 - Create a Recipe route
-//  POST  /recipes route
-
-
-//  Iteration 4 - Get All Recipes
-//  GET  /recipes route
-
-
-//  Iteration 5 - Get a Single Recipe
-//  GET  /recipes/:id route
-
-
-//  Iteration 6 - Update a Single Recipe
-//  PUT  /recipes/:id route
-
-
-//  Iteration 7 - Delete a Single Recipe
-//  DELETE  /recipes/:id route
-
-
-
-// Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
-
-
-
-//❗️DO NOT REMOVE THE BELOW CODE
-module.exports = app;
