@@ -27,7 +27,6 @@ mongoose
 //   res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 // });
 app.get("/", async (req, res, next) => {
-  // TODO
   try {
     const recipes = await Recipe.find();
     res.json(recipes);
@@ -51,7 +50,7 @@ app.post("/recipes", async (req, res, next) => {
     created,
   };
   const createdRecipe = await Recipe.create(recipeToCreate);
-  res.status(201).jspp, createdRecipe;
+  res.status(201).json(createdRecipe);
   try {
   } catch (error) {
     res.sendStatus(500);
@@ -96,7 +95,7 @@ app.put("/recipes/:recipeId", async (req, res, next) => {
         created,
       };
       const updatedRecipe = await Recipe.findOneAndUpdate(recipeToUpdate);
-      res.status(201).jspp, updatedRecipe;
+      res.status(201).json (updatedRecipe);
       } catch (error) {
         res.sendStatus(500);
       }
