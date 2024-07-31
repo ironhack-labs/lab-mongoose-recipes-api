@@ -55,6 +55,17 @@ app.post("/recipes", (req, res) => {
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 
+app.get("/recipes", (req, res) => {
+    Recipe.find()
+        .then((allRecipes) => {
+            res.status(200).json(allRecipes);
+        })
+        .catch((err) => {
+            console.error("Error getting all recipes", err);
+            res.status(500).json({ error: err.message });
+        });
+})
+
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
