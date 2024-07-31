@@ -34,7 +34,7 @@ const Recipe = require("./models/Recipe.model")
 app.post("/recipes", async (req, res, next) => {
 
     try {
-        await Recipe.create({
+        const newRecipe = await Recipe.create({
             title: req.body.title,
             instructions: req.body.instructions,
             level: req.body.level,
@@ -44,7 +44,7 @@ app.post("/recipes", async (req, res, next) => {
             isArchived: req.body.isArchived,
             created: req.body.created,
         })
-        res.json("todo ok")
+        res.json(newRecipe)
         
     } catch (error) {
         console.log(error)
@@ -55,8 +55,8 @@ app.post("/recipes", async (req, res, next) => {
 //  GET  /recipes route
 app.get("/recipes", async (req, res, next) => {
     try {
-        await Recipe.find()
-        res.json("done")
+       const recipes = await Recipe.find()
+        res.json(recipes)
     } catch (error) {
         console.log(error)
         
