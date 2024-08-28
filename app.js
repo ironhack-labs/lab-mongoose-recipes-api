@@ -1,7 +1,17 @@
 const express = require("express");
 const logger = require("morgan");
+const mongoose = require("mongoose");
+
+const Recipe = require("./models/Recipe.model");
 
 const app = express();
+
+const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
+
+mongoose
+  .connect(MONGODB_URI)
+  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch((err) => console.error("Error connecting to mongo", err));
 
 // MIDDLEWARE
 app.use(logger("dev"));
@@ -23,24 +33,76 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
+app.post("/recipes", (req, res) => {
+    const newRecipe = req.body;
 
+    Recipe.create(newRecipe)
+        .then((recipeFromDB) => {
+            res.status(201).json(recipeFromDB);
+        })
+        .catch((error) => {
+            res.status(500).json({error: "Error trying to create a new recipe"});
+        })
+});
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 
+app.get("/recipes", (req, res) => {
+    Recipe.find()
+        .then((recipeArr) => {
+            res.status(200).json(recipeArr);
+        })
+        .catch((error) => {
+            res.status(500).json({error: "Error trying to fetch a list of all the recipes"});
+        })
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
+app.get("/recipes/:id", (req, res) => {
+    const { recipeId } = req.params;
+
+    Recipe.findById({recipeId})
+        .then((specificRecipe) => {
+            res.status(200).json(specificRecipe);
+        })
+        .catch((error) => {
+            res.status(500).json({error: "Error trying to fetch the specified recipe"});
+        })
+});
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
+app.put("/recipes/:id", (req, res) => {
+    const { recipeId } = req.params;
+    const updatedRecipe = req.body;
+
+    Recipe.findByIdAndUpdate(recipeId, updatedRecipe, {new: true})
+        .then((updatedRecipe) => {
+            res.status(200).json(updatedRecipe);
+        })
+        .catch((error) => {
+            res.status(500).json({error: "Error trying to fetch the specified recipe"});
+        })
+});
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
+app.delete("/recipes/:id", (req, res) => {
+    const { recipeId } = req.params;
 
+    Recipe.deleteOne(recipeId)
+    .then((response) => {
+        res.status(204).json(response);
+    })
+    .catch((error) => {
+        res.status(500).json({error: "Error trying to fetch the specified recipe"});
+    })
+});
 
 // Start the server
 app.listen(3000, () => console.log('My first app listening on port 3000!'));
