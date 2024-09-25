@@ -1,4 +1,5 @@
 const Recipe = require("./models/Recipe.model")
+const User = require("./models/User.model")
 const express = require("express");
 const logger = require("morgan");
 
@@ -113,6 +114,47 @@ app.delete("/recipes/:id",(req,res)=>{
     Recipe.findByIdAndDelete(req.params.id)
     .then((deletedRecipe)=>{
         res.status(200).json(deletedRecipe)
+    })
+    .catch((err)=>{
+        res.status(500).json({message:"Internal Server Error - Something went Wrong"})
+        console.log(err)
+    })
+})
+
+//Iteration 9 | Create a Single User
+//Create a new route POST /users
+
+app.post("/users",(req,res)=>{
+
+    console.log(req.body)
+    
+    User.create({
+  
+        email:req.body.email,
+        firstName:req.body.firstName,
+        lastName:req.body.lastName,
+        password:req.body.password,
+        image:req.body.image
+
+    })
+    .then((createdUser)=>{
+        res.status(201).json(createdUser)
+    })
+    .catch((err)=>{
+        res.status(500).json({message:"Internal Server Error - Something went Wrong"})
+    })
+})
+
+//Bonus - Iteration 11 | Retrieve a Single User
+
+app.get("/users/:id",(req,res)=>{
+
+    console.log(req.params.id)
+
+    User.findById(req.params.id)
+    .then((foundUser)=>{
+        console.log(foundUser)
+        res.status(200).json(foundUser)
     })
     .catch((err)=>{
         res.status(500).json({message:"Internal Server Error - Something went Wrong"})
