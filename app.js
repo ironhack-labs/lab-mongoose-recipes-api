@@ -80,7 +80,7 @@ app.put('/recipes/:id', (req, res) => {
 
 
 //  Iteration 7 - Delete a Single Recipe
-app.put('/recipes/:id', (req, res) => {
+app.delete('/recipes/:id', (req, res) => {
   Recipe.findByIdAnddelete(req.params.id, req.body)
   .then((deletedRecipe) => {
     res.json(deletedRecipe)
