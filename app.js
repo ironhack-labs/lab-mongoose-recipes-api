@@ -3,7 +3,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const app = express();
 
-const Recipe = require("./Recipe.model.js");
+const Recipe = require("./models/Recipe.model.js");
 
 // MIDDLEWARE
 app.use(logger("dev"));
@@ -30,75 +30,78 @@ app.get("/", (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-app.post("/recipes", (req, res) => {
-  Recipe.create({
-    title: req.body.title,
-    instructions: req.body.instructions,
-    level: req.body.level,
-    ingredients: req.body.ingredients,
-    image: req.body.image,
-    duration: req.body.duration,
-    isArchived: req.body.isArchived,
-    created: req.body.created,
-  })
-    .then((createdRecipe) => {
-      res.status(201).json(createdRecipe);
-    })
-    .catch((err) => {
-      res.status(500).json({ message: "Error while creating a new recipe" });
+app.post("/recipes", async (req, res) => {
+  try {
+    const response = await Recipe.create({
+      title: req.body.title,
+      instructions: req.body.instructions,
+      level: req.body.level,
+      ingredients: req.body.ingredients,
+      image: req.body.duration,
+      duration: req.body.duration,
+      isArchived: req.body.isArchived,
     });
-});
 
+    res.status(201).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+});
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 
-app.get("/recipes", (req, res) => {
-  Recipe.find()
-    .then((allRecipes) => {
-      res.status(200).json(allRecipes);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Error while getting all recipes" });
-    });
-});
+app.get("/recipes", async (req, res) => {
+  try {
+    const allRecipes = await Recipe.find();
 
+    res.status(200).json(allRecipes);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
+});
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
-app.get("/recipes/:id", (req, res) => {
-  Recipe.findById(req.params.id)
-    .then((recipe) => {
-      res.status(200).json(recipe);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Error while getting a single recipe" });
-    });
+app.get("/recipes/:id", async (req, res) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+    res.status(200).json(recipe);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
 });
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
-app.put("/recipes/:id", (req, res) => {
-  Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((updatedRecipe) => {
-      res.status(200).json(updatedRecipe);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Error while updating a single recipe" });
+app.put("/recipes/:id", async (req, res) => {
+  try {
+    const updateRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
     });
+
+    res.status(200).json(updateRecipe);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
 });
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
-app.delete("/recipes/:id", (req, res) => {
-  Recipe.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.status(204).send();
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Error while deleting a single recipe" });
-    });
+app.delete("/recipes/:id", async (req, res) => {
+  try {
+    const response = await Recipe.findByIdAndDelete(req.params.id);
+
+    res.status(204).send();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "error" });
+  }
 });
 
 // Start the server
