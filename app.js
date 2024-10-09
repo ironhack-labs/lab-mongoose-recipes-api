@@ -30,7 +30,6 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
 app.post('/recipes', async (req, res) => {
     try {
 
@@ -114,7 +113,6 @@ app.delete('/recipes/:id', async (req, res) => {
       res.status(500).json({ message: 'error deleting recipe' })
     }
   })
-
 
 
 // Start the server
