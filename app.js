@@ -13,6 +13,8 @@ mongoose
 const express = require("express");
 const logger = require("morgan");
 
+const Recipe = require('./models/Recipe.model')
+
 const app = express();
 
 // MIDDLEWARE
@@ -57,10 +59,30 @@ app.post('/recipes', async (req, res) => {
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+app.get('/recipes', async (req, res) => {
+    try {
+        const recipes = await Recipe.find()
+        res.status(200).json(recipes)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'error aka not 200 (OK) fetching recipes' })
+    }
+})
 
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get('/recipes/:id', async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id)
+        res.status(200).json(recipe)
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'error fetching recipe by id' })
+    }
+})
 
 
 //  Iteration 6 - Update a Single Recipe
