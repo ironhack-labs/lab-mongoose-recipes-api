@@ -87,6 +87,7 @@ app.put("/recipes/:recipeId", async (req, res) => {
 app.delete("/recipes/:recetaId", async (req, res) => {
   try {
     await Recipe.findByIdAndDelete(req.params.recipeId);
+    res.status(204).send()
   } catch (error) {
     res.status(500).json(error);
   }
