@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 
 //importamos elmodelo
 const Recipe = require("./models/Recipe.model")
+const User = require("./models/User.model")
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
@@ -43,12 +44,14 @@ app.post("/recipes", async (req, res)=>{
         await Recipe.create({
             
             title : req.body.title,
-            instructions : req.body.instructions,
             level : req.body.level,
             ingredients : req.body.ingredients,
+            cuisine : req.body.cuisine,
+            dishType : req.body.dishType,
             image : req.body.image,
-            isArchived : req.body.isArchived,
-            created : req.body.created,
+            duration : req.body.duration,
+            creator : req.body.creator,
+            created : req.body.created
 
 
         }).then((createdRecipe)=>{
@@ -57,6 +60,8 @@ app.post("/recipes", async (req, res)=>{
 
 
     } catch (error) {
+        console.log(error)
+
         res.status(500).json("message:error creating")
     }
 }) 
@@ -66,7 +71,7 @@ app.post("/recipes", async (req, res)=>{
 //  GET  /recipes route
  app.get("/recipes", async (req, res)=>{
     try {
-        const response = await Recipe.find()
+        const response = await Recipe.find().populate("creator")
         
         res.status(200).json(response)
         
@@ -74,13 +79,13 @@ app.post("/recipes", async (req, res)=>{
         res.status(500).json("message:error getting recipe$")
         
     }
-}) 
+})  
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 app.get("/recipes/:recipeId", async (req, res)=>{
     try {
-        const response = await Recipe.findById(req.params.recipeId)
+        const response = await Recipe.findById(req.params.recipeId).populate("creator")
         res.status(200).json(response)
         }
      catch (error) {
@@ -97,14 +102,17 @@ app.put("/recipes/:id", async (req, res)=>{
         const response = await Recipe.findByIdAndUpdate(req.params.id, {
             
             title : req.body.title,
-            instructions : req.body.instructions,
             level : req.body.level,
             ingredients : req.body.ingredients,
+            cuisine : req.body.cuisine,
+            dishType : req.body.dishType,
             image : req.body.image,
-            isArchived : req.body.isArchived,
+            duration : req.body.duration,
+            creator : req.body.creator,
+
             created : req.body.created
 
-            
+
         
         }, {new:true})
         res.status(201).json(response)
@@ -129,6 +137,81 @@ app.delete("/recipes/:id", async (req, res)=>{
         
     }
 }) 
+
+
+//Iteration 9 | Create a Single User
+app.post("/users", async (req, res)=>{
+    try {
+        const response = await User.create({
+            
+            email : req.body.email,
+            firstName : req.body.firstName,
+            lastName : req.body.lastName,
+            password : req.body.passwordw
+
+        })
+            res.status(201).json({response})
+        
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("message:error creating")
+    }
+}) 
+
+
+// Bonus - Iteration 11 | Retrieve a Single User
+
+
+ app.get("/users/:id", async (req, res)=>{
+    try {
+        const response = await User.findById(req.params.id)
+        res.status(200).json(response)
+        }
+     catch (error) {
+        console.log(error)
+        res.status(500).json("message:error getting user")
+        
+    }
+})  
+
+
+
+//Bonus - Iteration 12 | Add Favorites
+app.put("/users/:id", async (req, res)=>{
+    try {
+        const response = await User.findByIdAndUpdate(req.params.id,{
+            
+            email : req.body.email,
+            firstName : req.body.firstName,
+            lastName : req.body.lastName,
+            password : req.body.password,
+            $push: { favorites: req.body.favorites }
+            
+        },{new: true})
+            res.status(201).json({response})
+ 
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("message:error creating")
+    }
+}) 
+
+//Retrieve a Single User with Favorites
+
+app.get("/users/:id", async (req, res)=>{
+    try {
+          const response = await User.findById(req.params.id).populate("favorites")
+          res.status(200).json(response)
+          }
+       catch (error) {
+          console.log(error)
+          res.status(500).json("message:error getting users")
+          
+      }
+  })   
+
 
 
 
