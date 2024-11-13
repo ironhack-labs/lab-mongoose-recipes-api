@@ -35,4 +35,4 @@ const RecipeSchema = new Schema({
     default: Date.now
   }
 })
-module.export = mongoose.model('Recipe', RecipeSchema)
+module.exports = mongoose.model('Recipe', RecipeSchema)
