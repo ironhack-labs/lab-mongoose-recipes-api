@@ -83,6 +83,26 @@ app.get("/recipes/:id", async (req, res) => {
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
+app.put("/recipes/:id", async (req, res) => {
+    
+    try {
+        const RecipeToUpdate = await Recipe.findById(req.params.id, {
+            title: req.body.title,
+            instructions: req.body.instructions,
+            level: req.body.level,
+            ingredients: req.body.ingredients,
+            image: req.body.image,
+            duration: req.body.duration,
+            isArchived: req.body.isArchived,
+            created: req.body.created
+        })
+        res.status(200).json(RecipeToUpdate)
+
+    } catch (error) {
+        res.status(500).json({ message: `Error al actualizar un documento, error: ${error}`})
+    }
+})
+
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
