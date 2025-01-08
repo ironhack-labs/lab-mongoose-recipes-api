@@ -106,6 +106,17 @@ app.put("/recipes/:id", async (req, res) => {
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
+app.delete("/recipes/:id", async (req, res) => {
+    
+    try {
+        
+        const RecipeToDlt = await Recipe.findByIdAndDelete(req.params.id)
+        res.status(204).send();
+
+    } catch (error) {
+        res.status(500).json({ message: `Error a la hora de eliminar la receta, error: ${error}`})
+    }
+})
 
 // Start the server
 app.listen(3000, () => console.log("My first app listening on port 3000!"));
