@@ -59,6 +59,14 @@ app.post("/recipes", (req, res) => {
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+app.get("/recipes", async (req, res) => {
+    try {
+        const Recipes = await Recipe.find()
+        res.status(200).json(Recipes)
+    } catch (error) {
+        res.status(500).json({ message: `Error al devolver la información de las recetas, error: ${error}`})
+    }
+})
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
