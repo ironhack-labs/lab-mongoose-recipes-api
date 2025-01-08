@@ -70,6 +70,16 @@ app.get("/recipes", async (req, res) => {
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get("/recipes/:id", async (req, res) => {
+    
+    try {
+        const specificRecipe = await Recipe.findById(req.params.id)
+        res.status(200).json(specificRecipe)
+
+    } catch (error) {
+        res.status(500).json({ message: `Error al conseguir la receta especifica, error: ${error}`})
+    }
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
