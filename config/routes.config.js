@@ -6,6 +6,7 @@ const recipes = require('../controllers/recipes.controller');
 
 router.post('/recipes', recipes.create);
 router.get('/recipes', recipes.list); // el param debe estar en plural siempre
+router.get('/recipes/:id', recipes.detail);
 
 /* Middleware para rutas no encontradas (404) */
 router.use((req, res, next) => {

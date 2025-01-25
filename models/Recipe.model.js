@@ -41,6 +41,16 @@ const eventSchema = new mongoose.Schema({ // Schema es un objeto que define la e
         type: Date,
         default: Date.now,
     }
+}   , {
+        timestamps: true,   // timestamps es necesario para que se creen los campos createdAt y updatedAt
+        toJSON: {
+          transform: function (doc, ret) {
+            delete ret.__v;
+            delete ret._id;
+            ret.id = doc.id;
+            return ret;
+          }
+        }
 });
 
 

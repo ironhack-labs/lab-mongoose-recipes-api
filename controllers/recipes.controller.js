@@ -20,3 +20,16 @@ module.exports.list = (req, res, next) => {
         next(createError(500, 'Internal Server Error'));
     });
 }
+
+module.exports.detail = (req, res, next) => {
+    const { id } = req.params;
+    Recipe.findById(id)
+      .then((recipe) => {
+        if (!recipe) next(createError(404, 'Recipe not found'))
+        else res.status(200).json(recipe);
+      })
+      .catch((error) => {
+        console.error(error);
+        next(createError(500, 'Internal Server Error'));
+    });  
+}
