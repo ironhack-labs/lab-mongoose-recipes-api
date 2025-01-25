@@ -12,11 +12,11 @@ router.post("/recipes", recipes.create)
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+router.get("/recipes", recipes.list)
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+router.get("/recipes/:id", recipes.detail)
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
@@ -32,8 +32,11 @@ router.use((req, res, next) => {
 
 router.use((error, req, res, next) => {
     console.error(error);
+    
+    // Incorrect recipe id
+    if(error instanceof mongoose.Error.CastError && error.message.includes("_id")) error = createError(404, "Recipes not found")
     // Validation error
-    if(error instanceof mongoose.Error.ValidationError) error = createError(404, error)
+    else if(error instanceof mongoose.Error.ValidationError) error = createError(404, error)
     // Server error (500):
     else if(!error.status) error = createError(500, error.message)
 
