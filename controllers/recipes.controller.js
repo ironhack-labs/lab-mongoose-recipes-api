@@ -40,8 +40,20 @@ module.exports.update = (req, res, next) => {
     // Update the recipe applying validations and return a new recipe
     Recipe.findByIdAndUpdate(id, body, { runValidators: true, new: true })
         .then((recipe) => {
-            if(!recipe) next(createError(404, "Update failed"))
+            if(!recipe) next(createError(404, "Update failed. Recipe not found"))
             else res.status(201).json(recipe)
+        })
+        .catch((error) => next(error))
+}
+
+//Iteration 7
+// Delete Recipe
+module.exports.delete = (req, res, next) => {
+    const { id } = req.params;
+    Recipe.findByIdAndDelete(id)
+        .then((recipe) => {
+            if(!recipe) next(createError(404, "Delete failed. Recipe not found"))
+            else res.status(204).send()
         })
         .catch((error) => next(error))
 }

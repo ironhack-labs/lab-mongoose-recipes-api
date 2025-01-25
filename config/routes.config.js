@@ -23,7 +23,8 @@ router.get("/recipes/:id", recipes.detail)
 router.put("/recipes/:id", recipes.update)
 
 //  Iteration 7 - Delete a Single Recipe
-//  DELETE  /recipes/:id 
+//  DELETE  /recipes/:id
+router.delete("/recipes/:id", recipes.delete)
 
 //--ERRORS--
 router.use((req, res, next) => {
