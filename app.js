@@ -103,7 +103,7 @@ app.put("/recipes/:id", (req, res) => {
 
 	Recipe.findByIdAndUpdate(id, reqBody, { new: true })
 		.then((updatedRecipe) => {
-			res.status(204).json(updatedRecipe);
+			res.status(200).json(updatedRecipe);
 		})
 		.catch((error) => {
 			res.status(500).json({ error: "Failed to update the recipe" });
@@ -118,7 +118,7 @@ app.delete("/recipes/:id", (req, res) => {
 
 	Recipe.findByIdAndDelete(id)
 		.then((results) => {
-			res.json({ message: "The recipe has been deleted" });
+			res.status(204).json({ message: "The recipe has been deleted" });
 		})
 		.catch((error) => {
 			res.status(500).json({ error: "Failed to delete the recipe" });
