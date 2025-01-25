@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
+require("dotenv").config()
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json());
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
-
+require("./config/db.config")
 
 
 // ROUTES
@@ -43,7 +44,8 @@ app.get('/', (req, res) => {
 
 
 // Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
+const port = Number(process.env.port || 3000)
+app.listen(port, () => console.log(`My first app listening on port ${port}!`));
 
 
 
