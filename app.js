@@ -32,7 +32,6 @@ app.use((req, res, next) => { // req es de request (lleva toda la info del http)
 const routes = require('./config/routes.config');
 app.use('/api/v1/', routes);
 
-
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 

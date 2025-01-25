@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({ // Schema es un objeto que define la estructura de los eventos
     title: {
         type: String,
-        require: [true, 'Event title is required'],  // Si no se pone un título, salta un error 
+        required: [true, 'Event title is required'],  // Si no se pone un título, salta un error 
         unique: true,    
     },
 
     instructions: {
         type: String,
-        require: [true, 'Recipe instruction are required'],
+        required: [true, 'Recipe instruction are required'],
     },
 
     level: {
@@ -38,8 +38,8 @@ const eventSchema = new mongoose.Schema({ // Schema es un objeto que define la e
     },
 
     created: {
-        type: Boolean,
-        default: Date.now(),
+        type: Date,
+        default: Date.now,
     }
 });
 
