@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const recipeSchema = new mongoose.Schema({
     title: {
         type: String,
-        unique: true
+        unique: [true, "Title must be unique"]
     },
     instructions: {
         type: String,
@@ -32,7 +32,20 @@ const recipeSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-})
+}, {
+    // To display info about the creation and update
+    timestamps: true,
+    // Delete _id and __v and create id key
+    toJSON: {
+        transform: function(doc, ret) {
+            delete ret._id;
+            delete ret.__v;
+            ret.id = doc.id;
+            return ret;
+        }
+    }
+}
+)
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 module.exports = Recipe;

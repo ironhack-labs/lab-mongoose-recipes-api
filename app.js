@@ -16,30 +16,8 @@ require("./config/db.config")
 
 
 // ROUTES
-//  GET  / route - This is just an example route
-app.get('/', (req, res) => {
-    res.send("<h1>LAB | Express Mongoose Recipes</h1>");
-});
-
-
-//  Iteration 3 - Create a Recipe route
-//  POST  /recipes route
-
-
-//  Iteration 4 - Get All Recipes
-//  GET  /recipes route
-
-
-//  Iteration 5 - Get a Single Recipe
-//  GET  /recipes/:id route
-
-
-//  Iteration 6 - Update a Single Recipe
-//  PUT  /recipes/:id route
-
-
-//  Iteration 7 - Delete a Single Recipe
-//  DELETE  /recipes/:id route
+const routes = require("./config/routes.config")
+app.use("/api/v1", routes)
 
 
 
