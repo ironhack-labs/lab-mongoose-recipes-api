@@ -20,7 +20,7 @@ router.get("/recipes/:id", recipes.detail)
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
-
+router.put("/recipes/:id", recipes.update)
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id 

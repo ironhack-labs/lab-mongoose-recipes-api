@@ -31,3 +31,17 @@ module.exports.detail = (req, res, next) => {
         })
         .catch((error) => next(error))
 }
+
+//Iteration 6
+// Update Recipe
+module.exports.update = (req, res, next) => {
+    const { id } = req.params;
+    const { body } = req;
+    // Update the recipe applying validations and return a new recipe
+    Recipe.findByIdAndUpdate(id, body, { runValidators: true, new: true })
+        .then((recipe) => {
+            if(!recipe) next(createError(404, "Update failed"))
+            else res.status(201).json(recipe)
+        })
+        .catch((error) => next(error))
+}
