@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
-
+require('./api/config/db.config');
 
 
 // ROUTES
@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
     res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 });
 
+const routes = require('./api/config/routes.config');
+app.use('/api', routes)
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
