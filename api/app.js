@@ -1,5 +1,8 @@
+require('dotenv').config();
 const express = require("express");
 const logger = require("morgan");
+
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -8,14 +11,26 @@ app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(express.json());
 
+app.use((req, res, next) => {
+    next();
+})
+
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
+/* DB init */
+require('./config/db.config');
+
 
 
 
 // ROUTES
 //  GET  / route - This is just an example route
+
+/* API Routes Configuration */
+const routes = require('./config/routes.config.js');
+app.use('/api/v1/', routes);
+
 app.get('/', (req, res) => {
     res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 });
