@@ -1,6 +1,9 @@
+require('dotenv').config(); // Mira en la raíz de la app y busca el fichero .env y carga las variables de entorno de su interior
 const express = require("express");
 const logger = require("morgan");
-const mongoose = require("mongoose");
+
+/* DB init */
+require('./config/db.config');  // Con esto se conecta a la base de datos
 
 const app = express();
 
@@ -12,24 +15,22 @@ app.use(express.json());
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
-const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
-
-mongoose
-  .connect(MONGODB_URI)
-  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-  .catch((err) => console.error("Error connecting to mongo", err));
-
+app.use((req, res, next) => { // req es de request (lleva toda la info del http) y res de response
+    next(); // Si no pongo next no se ejecuta el siguiente middleware
+})
 
 
 // ROUTES
 //  GET  / route - This is just an example route
-app.get('/', (req, res) => {
-    res.send("<h1>LAB | Express Mongoose Recipes</h1>");
-});
+// app.get('/', (req, res) => {
+//     res.send("<h1>LAB | Express Mongoose Recipes</h1>");
+// });
 
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
+const routes = require('./config/routes.config');
+app.use('/api/v1/', routes);
 
 
 //  Iteration 4 - Get All Recipes
@@ -50,8 +51,8 @@ app.get('/', (req, res) => {
 
 
 // Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
-
+const port = Number(process.env.PORT || 3001);  // port es un STRING, con Number se convierte || esto se usa en caso de que PORT no esté definido, aunq tb vale '??'
+app.listen(port, () => console.info(`Application running at port ${port}`));
 
 
 //❗️DO NOT REMOVE THE BELOW CODE
