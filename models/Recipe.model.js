@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 const recipeSchema = new mongoose.Schema({
     title: {
         type: String,
+        required: [true, "Title is required"],
         unique: [true, "Title must be unique"]
     },
     instructions: {
         type: String,
-        required: true
+        required: [true, "Instructions are required"]
     },
     level: {
         type: String,
