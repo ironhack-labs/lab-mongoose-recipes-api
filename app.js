@@ -38,7 +38,6 @@ app.get('/', (req, res) => {
 //  POST  /recipes route
 
 app.post("/recipes", (req, res)=>{
-    console.log(req.body.level);
     Recipe.create({
         instructions: req.body.instructions,
         title: req.body.title,
@@ -58,6 +57,12 @@ app.post("/recipes", (req, res)=>{
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+
+app.get("/recipes", (req, res) => {
+    Recipe.find()
+    .then(foundRecipes => res.status(200).json(foundRecipes))
+    .catch(error => res.status(500).json(err))
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
