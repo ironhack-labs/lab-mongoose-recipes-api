@@ -50,8 +50,8 @@ app.post("/recipes", (req, res)=>{
     })
     .then((createdRecipe)=>{
         res.status(201).json(createdRecipe);
-    }).catch((err) => {
-        res.status(500).json(err);
+    }).catch((error) => {
+        res.status(500).json(error);
     })
 })
 
@@ -61,7 +61,7 @@ app.post("/recipes", (req, res)=>{
 app.get("/recipes", (req, res) => {
     Recipe.find()
     .then(foundRecipes => res.status(200).json(foundRecipes))
-    .catch(error => res.status(500).json(err))
+    .catch(error => res.status(500).json(error))
 });
 
 //  Iteration 5 - Get a Single Recipe
@@ -69,7 +69,7 @@ app.get("/recipes", (req, res) => {
 app.get("/recipes/:id", (req, res) => {
   Recipe.findByIdAndUpdate(req.params.id)
     .then((foundRecipes) => res.status(200).json(foundRecipes))
-    .catch((error) => res.status(500).json(err));
+    .catch((error) => res.status(500).json(error));
 });
 
 //  Iteration 6 - Update a Single Recipe
@@ -86,7 +86,11 @@ app.put("/recipes/:id", (req, res) => {
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
-
+app.delete("/recipes/:id", (req, res) => {
+  Recipe.findByIdAndDelete(req.params.id)
+    .then((foundRecipes) => res.status(200).json(foundRecipes))
+    .catch((error) => res.status(500).json(error));
+});
 
 // Start the server
 app.listen(3000, () => console.log('My first app listening on port 3000!'));
