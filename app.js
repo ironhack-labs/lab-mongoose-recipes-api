@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
+require("dotenv").config()
 
 const app = express();
 
@@ -11,39 +12,20 @@ app.use(express.json());
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
-
+require("./config/db.config")
 
 
 // ROUTES
-//  GET  / route
-app.get('/', (req, res) => {
-    res.send("<h1>Lab | Express Mongoose Recipes</h1>");
-});
+const routes = require("./config/routes.config")
+app.use("/api/v1", routes)
 
-
-//  Iteration 4 - Create recipe route
-//  POST  /recipes route
-
-
-//  Iteration 5 - Read all recipes
-//  GET  /recipes route
-
-
-//  Iteration 6 - Read a single recipe
-//  GET  /recipes/:id route
-
-
-//  Iteration 7 - Update a single recipe
-//  PUT  /recipes/:id route
-
-
-//  Iteration 8 - Delete a single recipe
-//  DELETE  /recipes/:id route
-
-
-//  Iteration 9 - Create a single user
-//  POST  /users route
 
 
 // Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
+const port = Number(process.env.port || 3000)
+app.listen(port, () => console.log(`My first app listening on port ${port}!`));
+
+
+
+//❗️DO NOT REMOVE THE BELOW CODE
+module.exports = app;
