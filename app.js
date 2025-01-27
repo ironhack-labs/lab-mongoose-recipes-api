@@ -1,5 +1,5 @@
-const express = require("express");
-const logger = require("morgan");
+const express = require("express"); 
+const logger = require("morgan"); 
 const mongoose = require("mongoose"); 
 
 const app = express();
@@ -25,6 +25,24 @@ mongoose
 // ...
 
 
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const recipeSchema = new Schema({
+  title: { type: String, required: true, unique: true },
+  instructions: { type: String, required: true },
+  level: { type: String, enum: ["Easy Peasy", "Amateur Chef", "UltraPro Chef"] },
+  ingredients: { type: [String] },
+  image: { type: String, default: "https://images.media-allrecipes.com/images/75131.jpg" },
+  duration: { type: Number, min: 0 },
+  isArchived: { type: Boolean, default: false },
+  created: { type: Date, default: Date.now }
+});
+
+const Recipe = mongoose.model("Recipe", recipeSchema);
+
+module.exports = Recipe;
+
 // ROUTES
 //  GET  / route - This is just an example route
 app.get('/', (req, res) => {
@@ -35,6 +53,30 @@ app.get('/', (req, res) => {
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
 
+app.post("/recipes", (req, res) => {
+
+  Recipe.create({
+    title: req.body.title,
+    instructions: req.body.instructions,
+    level: req.body.level,
+    image: req.body.image,
+    duration: req.body.duration,
+    isArchived: req.body.isArchived,
+    created: req.body.created,
+  })
+
+  .then((createdRecipe) => {
+
+    res.status(201).json(createdRecipe); 
+  })
+
+  .catch((err) => {
+
+    res.status(500).json({ message: "Error while creating a new recipe" }); 
+
+  })
+  
+}); 
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
