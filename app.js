@@ -25,7 +25,8 @@ mongoose
 
 // ...
 
-const mongoose = require("mongoose");
+/*Iteration 2 - Recipe Model*/
+
 const Schema = mongoose.Schema;
 
 const recipeSchema = new Schema({
@@ -55,7 +56,22 @@ app.get("/", (req, res) => {
   res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 });
 
-//  Iteration 3 - Create a Recipe route
+/*Iteration 3 | User Model*/
+
+const userSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  firstName: { type: String, required: true, min: 2 },
+  lastName: { type: String, required: true, min: 2},
+  password: { type: String, required: true, min: 2}, 
+  image: { type: String, default: "https://xsgames.co/randomusers/assets/avatars/pixel/44.jpg"}, 
+ });
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+
+
+//  Iteration 4 - Create a Recipe route
 //  POST  /recipes route
 
 app.post("/recipes", (req, res) => {
@@ -74,11 +90,11 @@ app.post("/recipes", (req, res) => {
     })
 
     .catch((err) => {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error while creating the recipe route" });
     });
 });
 
-//  Iteration 4 - Get All Recipes
+//  Iteration 5 - Read/get All Recipes
 //  GET  /recipes route
 
 app.get("/recipes", (req, res) => {
@@ -87,13 +103,11 @@ app.get("/recipes", (req, res) => {
       res.status(200).json(allRecipes);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error while searching all the recipes" });
     });
 });
 
-//  Iteration 5 - Get a Single Recipe
-//  GET  /recipes/:id route
-/*Create a new route GET /recipes/:id that, upon request, retrieves a specified recipe document by its _id from the database. You can find the instructions for the route below:*/
+//  Iteration 6 - Read/get a Single Recipe
 
 app.get("/recipes/:id", (req, res) => {
   Recipe.findById(req.params.id)
@@ -101,37 +115,57 @@ app.get("/recipes/:id", (req, res) => {
       res.status(200).json(recipe);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error while searching the recipe" });
     });
 });
 
-//  Iteration 6 - Update a Single Recipe
+//  Iteration 7 - Update a Single Recipe
 //  PUT  /recipes/:id route
  
 
 app.put("/recipes/:id", (req, res) => {
-  Recipe.findByIdAndUpdate(req.params.id)
+  Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true})
     .then((recipe) => {
       res.status(200).json(recipe);
     })
     .catch((error) => {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error while updating the recipe" });
     });
 });
 
-//  Iteration 7 - Delete a Single Recipe
+//  Iteration 8 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
 app.delete("/recipes/:id", (req, res) => {
-  Recipe.findById(req.params.id)
+  Recipe.findByIdAndDelete(req.params.id)
   .then((recipe) => {
     res.status(204).send();
   })
   .catch((error) => {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error while deleting the recipe" });
   });
 
+});
+
+//Iteration 9 | Create a Single User
+
+app.post("/users", (req, res) => {
+  User.create({
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    password: req.body.password,
+    image: req.body.image,
+  })
+  .then((createdUser) => {
+    res.status(201).json(createdUser)
+  })
+  .catch((error) => {
+    res.status(500).json({ message: "Internal Server Error while trying to create a new user"})
+
   });
+});
+
 
 // Start the server
 app.listen(3000, () => console.log("My first app listening on port 3000!"));
