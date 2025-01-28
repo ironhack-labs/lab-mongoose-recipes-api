@@ -1,9 +1,9 @@
 require("dotenv").config(); 
 const express = require("express");
 const logger = require("morgan");
-const { connectToDB } = require("./config/db.config");
+const { connectToDB } = require("./config/db.config"); 
 
-const recipesRoutes = require("./api/recipes.routes"); 
+const recipesRoutes = require("./recipes.routes"); 
 
 const app = express();
 

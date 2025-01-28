@@ -1,5 +1,4 @@
-const Recipe = require("../models/Recipe.model");
-
+const Recipe = require("../models/Recipe.model.js");
 
 const createRecipe = async (req, res) => {
   try {
@@ -9,7 +8,6 @@ const createRecipe = async (req, res) => {
     res.status(500).json({ error: "Error creating recipe" });
   }
 };
-
 
 const getAllRecipes = async (req, res) => {
   try {
@@ -30,16 +28,18 @@ const getRecipeById = async (req, res) => {
   }
 };
 
-
 const updateRecipe = async (req, res) => {
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedRecipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     res.status(200).json(updatedRecipe);
   } catch (error) {
     res.status(500).json({ error: "Error updating recipe" });
   }
 };
-
 
 const deleteRecipe = async (req, res) => {
   try {
@@ -50,4 +50,10 @@ const deleteRecipe = async (req, res) => {
   }
 };
 
-module.exports = { createRecipe, getAllRecipes, getRecipeById, updateRecipe, deleteRecipe };
+module.exports = {
+  createRecipe,
+  getAllRecipes,
+  getRecipeById,
+  updateRecipe,
+  deleteRecipe,
+};
