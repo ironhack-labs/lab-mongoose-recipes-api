@@ -1,49 +1,29 @@
+require("dotenv").config(); 
 const express = require("express");
 const logger = require("morgan");
+const { connectToDB } = require("./config/db.config"); 
+
+const recipesRoutes = require("./recipes.routes"); 
 
 const app = express();
 
-// MIDDLEWARE
+// Middleware
 app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(express.json());
 
 
-// Iteration 1 - Connect to MongoDB
-// DATABASE CONNECTION
+connectToDB();
+
+app.use("/recipes", recipesRoutes);
 
 
-
-// ROUTES
-//  GET  / route
-app.get('/', (req, res) => {
-    res.send("<h1>Lab | Express Mongoose Recipes</h1>");
+app.get("/", (req, res) => {
+  res.send("<h1>LAB | Express Mongoose Recipes</h1>");
 });
 
 
-//  Iteration 4 - Create recipe route
-//  POST  /recipes route
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 
-
-//  Iteration 5 - Read all recipes
-//  GET  /recipes route
-
-
-//  Iteration 6 - Read a single recipe
-//  GET  /recipes/:id route
-
-
-//  Iteration 7 - Update a single recipe
-//  PUT  /recipes/:id route
-
-
-//  Iteration 8 - Delete a single recipe
-//  DELETE  /recipes/:id route
-
-
-//  Iteration 9 - Create a single user
-//  POST  /users route
-
-
-// Start the server
-app.listen(3000, () => console.log('My first app listening on port 3000!'));
+module.exports = app;
