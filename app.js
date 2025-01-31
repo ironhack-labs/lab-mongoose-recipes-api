@@ -74,6 +74,16 @@ app.get("/recipes", (req, res) => {
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
 
+app.get("/recipes/:recipeId", (req, res) => {
+  const { recipeId } = req.params;
+  Recipe.findById(recipeId)
+    .then((results) => res.json(results))
+    .catch((error) => {
+      console.error("RECIPE NOT FOUND", error);
+      res.status(404).json({ error: "No recipe found" });
+    });
+});
+
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
