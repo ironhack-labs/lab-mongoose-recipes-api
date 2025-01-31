@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const recipeSchema = new Schema({
+const RecipeSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -32,7 +32,7 @@ const recipeSchema = new Schema({
   },
   created:{
     type: Date,
-    default: now,
+    default: Date.now,
   }
 });
 
