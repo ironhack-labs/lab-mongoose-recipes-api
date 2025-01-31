@@ -87,8 +87,41 @@ app.get("/recipes/:recipeId", (req, res) => {
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
 
+app.put("/recipes/:recipeId", (req, res) => {
+  Recipe.findByIdAndUpdate(
+    req.params.recipeId,
+    {
+      title: req.body.title,
+      instructions: req.body.instructions,
+      level: req.body.level,
+      ingredients: req.body.ingredients,
+      image: req.body.image,
+      duration: req.body.duration,
+      isArchived: req.body.isArchived,
+    },
+    { new: true }
+  )
+    .then((recipe) => {
+      res.json(recipe);
+    })
+    .catch((error) => {
+      res.status(400).json(error);
+    });
+});
+
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
+
+app.delete("/recipes/:recipeId", (req, res) => {
+  Recipe.findByIdAndDelete(req.params.recipeId)
+
+    .then((recipe) => {
+      res.json({ recipe });
+    })
+    .catch((error) => {
+      res.status(400).json(error);
+    });
+});
 
 // Start the server
 app.listen(3000, () => console.log("My first app listening on port 3000!"));
