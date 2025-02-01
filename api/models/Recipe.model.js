@@ -1,3 +1,4 @@
+//model
 const mongoose = require('mongoose');
 const eventSchema = new mongoose.Schema({ // Schema es un objeto que define la estructura de los eventos
     title: {
