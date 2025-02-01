@@ -14,10 +14,10 @@ app.use(express.json());
 
 
 // Iteration 1 - Connect to MongoDB
-// DATABASE CONNECTION
+// DATABASE CONNECTION 
 mongoose
   .connect(MONGODB_URI)
-  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .then((response) => console.log(`Connected to Mongo! Database name: "${response.connections[0].name}"`))
   .catch((err) => console.error("Error connecting to mongo", err));
 
 // ROUTES
@@ -63,7 +63,7 @@ app.put("/recipes/:id", (req, res) => {
 //  DELETE  /recipes/:id route
 app.delete("/recipes/:id", (req, res) => {
     Recipe.findByIdAndDelete(req.params.id)
-    .then(() => res.status(204))
+    .then(() => res.status(204).send())
     .catch(err => res.status(500).json({message: `Error occurred while deleting the selected recipe: ${err}`}))
 })
 
