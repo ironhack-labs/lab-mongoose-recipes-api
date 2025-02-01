@@ -29,23 +29,43 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post("/recipes", (req, res) => {
+    Recipe.create(req.body)
+    .then(newRecipe => res.status(201).json(newRecipe))
+    .catch(err => res.status(500).json({message: `Error occurred while creating recipe: ${err}`}))
+})
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+app.get("/recipes", (req, res) => {
+    Recipe.find()
+    .then(allRecipes => res.status(200).json(allRecipes))
+    .catch(err => res.status(500).json({message: `Error occurred while getting all the recipes: ${err}`}))
+})
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get("/recipes/:id", (req, res) => {
+    Recipe.findById(req.params.id)
+    .then(selectedRecipe => res.status(200).json(selectedRecipe))
+    .catch(err => res.status(500).json({message: `Error occurred while getting the selected recipe: ${err}`}))
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
-
+app.put("/recipes/:id", (req, res) => {
+    Recipe.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(updatedRecipe => res.status(200).json(updatedRecipe))
+    .catch(err => res.status(500).json({message: `Error occurred while updating the selected recipe: ${err}`}))
+})
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-
+app.delete("/recipes/:id", (req, res) => {
+    Recipe.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204))
+    .catch(err => res.status(500).json({message: `Error occurred while deleting the selected recipe: ${err}`}))
+})
 
 
 // Start the server
