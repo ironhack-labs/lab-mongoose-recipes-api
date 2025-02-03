@@ -67,6 +67,7 @@ app.get("/recipes/:id", async (req, res) => {
       return res.status(404).json({ message: "Recipe not found" });
     }
     res.status(200).json(recipe);
+    console.log(recipe);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
