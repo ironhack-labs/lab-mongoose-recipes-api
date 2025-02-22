@@ -1,7 +1,9 @@
 const express = require("express");
 const logger = require("morgan");
-
+const mongoose = require("mongoose");
 const app = express();
+
+const Recipe = require("./models/Recipe.model");
 
 // MIDDLEWARE
 app.use(logger("dev"));
@@ -11,6 +13,12 @@ app.use(express.json());
 
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
+const MONGODB_URI = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
+
+mongoose
+  .connect(MONGODB_URI)
+  .then((x) => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
+  .catch((err) => console.error("Error connecting to mongo", err));
 
 
 
@@ -23,23 +31,69 @@ app.get('/', (req, res) => {
 
 //  Iteration 3 - Create a Recipe route
 //  POST  /recipes route
-
+app.post('/recipes', (req, res) => {
+    Recipe.create(req.body)
+    .then((createdRecipe) => {
+        res.status(201).json(createdRecipe)
+    })
+    .catch((error) => {
+        res.status(500).json(error)
+    })
+});
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
+app.get('/recipes', (req, res) => {
+Recipe.find()
+    .then((allRecipes) => {
+        res.status(200).json(allRecipes)
+    })
+    .catch((error) => {
+        res.status(500).json(error)
+    })
 
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
-
+app.get('/recipes/:recipesId', (req, res) => {
+    const { recipesId } = req.params;
+    Recipe.findById(recipesId)
+        .then((allRecipes) => {
+            res.status(200).json(allRecipes)
+        })
+        .catch((error) => {
+            res.status(500).json(error)
+        })
+    
+    });
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
-
+app.put('/recipes/:recipesId', (req, res) => {
+    const { recipesId } = req.params;
+    Recipe.findByIdAndUpdate (recipesId, req.body, {new: true})
+        .then((allRecipes) => {
+            res.status(200).json(allRecipes)
+        })
+        .catch((error) => {
+            res.status(500).json(error)
+        })
+});
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-
+app.delete('/recipes/:recipesId', (req, res) => {
+    const { recipesId } = req.params;
+    Recipe.findByIdAndDelete (recipesId)
+        .then(() => {
+            res.status(204).json()
+        })
+        .catch((error) => {
+            res.status(500).json(error)
+        })
+}
+);
 
 
 // Start the server
