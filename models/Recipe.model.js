@@ -37,8 +37,8 @@ const recipeSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  creator: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
-
 module.exports = Recipe;
