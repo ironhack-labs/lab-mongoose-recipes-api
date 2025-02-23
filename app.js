@@ -105,6 +105,23 @@ app.delete("/recipes/:id", (req, res) => {
     });
 });
 
+app.post('/users', (req, res) => {
+    
+    User.create({
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        password: req.body.password,
+        image: req.body.image
+
+    })
+    .then((createdUser) => {
+        res.status(201).json(createdUser);
+    })
+    .catch((error) => {
+        res.status(500).json({message: "Error while creating a new user"});
+    });
+}
 
 // Start the server
 app.listen(3000, () => console.log('My first app listening on port 3000!'));
