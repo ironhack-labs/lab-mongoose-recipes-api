@@ -3,6 +3,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 
 const Recipe = require("./models/Recipe.model");
+const User = require("./models/User.model");
 
 const app = express();
 
