@@ -95,7 +95,7 @@ app.put("/recipes/:id", (req, res) => {
 
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
-app.delete("recipes/:id", (req, res) => {
+app.delete("/recipes/:id", (req, res) => {
     Recipe.findByIdAndDelete(req.params.id)
         .then(() => {
             console.log("Recipe deleted!");
