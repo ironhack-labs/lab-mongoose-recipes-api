@@ -63,12 +63,19 @@ app.get('/recipes', (req, res) => {
 
     Recipe.find()
     .then((allRecipes) => {res.status(200).json(allRecipes)})
-    .catch(e => res.status(500).json({message: "Error when loading all recipe"}))
+    .catch(e => res.status(500).json({message: "Error when loading all recipes"}))
 })
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
+app.get('/recipes/:id', (req, res) => {
+    const {id} = req.params
+   
+    Recipe.findById(id)
+    .then((recipe) => {res.status(200).json(recipe)})
+    .catch(e => res.status(500).json({message: "Error when getting the recipe"}))
 
+})
 
 //  Iteration 6 - Update a Single Recipe
 //  PUT  /recipes/:id route
