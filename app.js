@@ -91,6 +91,12 @@ app.put('/recipes/:id', (req, res) => {
 //  Iteration 7 - Delete a Single Recipe
 //  DELETE  /recipes/:id route
 
+app.delete('/recipes/:id', (req, res) => {
+    const {id} = req.params
+    Recipe.findByIdAndDelete(id)
+    .then(res.status(204).send())
+    .catch(e => res.status(500).json({message: "Error when deleting a recipe"}))
+})
 
 
 // Start the server
