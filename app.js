@@ -41,6 +41,18 @@ app.post("/recipes", (req, res, next) => {
       res.status(500).json("Internal server error");
     });
 });
+
+//  POST  /users route
+app.post("/users", (req, res, next) => {
+  const newUser = req.body;
+  User.create(newUser)
+    .then((userFromDb) => {
+      res.status(201).json("Created");
+    })
+    .catch((err) => {
+      res.status(500).json("Internal server error");
+    });
+});
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
 
@@ -58,7 +70,7 @@ app.get("/recipes", (req, res, next) => {
 //  GET  /recipes/:id route
 app.get("/recipes/:recipes", (req, res, next) => {
   const { recipeId } = req.params;
-  Recipe.find(recipeId)
+  Recipe.findById(recipeId)
     .then((recipeFromDb) => {
       res.status(200).json("Succes");
     })
