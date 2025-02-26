@@ -12,6 +12,7 @@ app.use(express.json());
 // Iteration 1 - Connect to MongoDB
 // DATABASE CONNECTION
 const mongoose = require("mongoose");
+const Recipe = require("./models/Recipe.model");
 
 const MONGODB_URL = "mongodb://127.0.0.1:27017/express-mongoose-recipes-dev";
 
@@ -49,7 +50,15 @@ app.post("/recipes", (req, res) => {
 
 //  Iteration 4 - Get All Recipes
 //  GET  /recipes route
-
+app.get("/recipes", (req, res) => {
+    Recipe.find()
+    .then((allRecipes) => {
+        res.status(200).json(allRecipes);
+    })
+    .catch((err) => {
+        res.status(500).json({ message: "Error while getting all recipes" });
+    });
+});
 
 //  Iteration 5 - Get a Single Recipe
 //  GET  /recipes/:id route
