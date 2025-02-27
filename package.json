@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/ironhack-labs/lab-express-mongoose-recipes#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^8.10.2",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
