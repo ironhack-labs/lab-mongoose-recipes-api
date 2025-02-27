@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const Recipe = require("./models/Recipe.model");
+const User = require("./models/User.model");
 
 const app = express();
 
@@ -31,17 +32,9 @@ app.get('/', (req, res) => {
 //  POST  /recipes route
 app.post('/recipes', (req, res) => {
     Recipe
-        .create({
-            title: req.body.title,
-            instructions: req.body.instructions,
-            level: req.body.level,
-            ingredients: req.body.ingredients,
-            image: req.body.image,
-            duration: req.body.duration,
-            isArchived: req.body.isArchived,
-            created: req.body.create
-        })
+        .create(req.body)
         .then((createRecipe) => {
+            console.log("Recipe creat");
             res.status(201).json(createRecipe);
         })
         .catch((error) => {
@@ -86,6 +79,7 @@ app.put('/recipes/:id', (req, res) => {
     Recipe
         .findByIdAndUpdate(recipesId, req.body, { new: true })
         .then((updateRecipe) => {
+            console.log("Update Recipe");
             res.status(200).json(updateRecipe);
         })
         .catch((err) => {
@@ -107,6 +101,33 @@ app.delete('/recipes/:id', (req, res) => {
         .catch((error) => {
             console.log("Error deleting a recipe", err.message);
             res.status(500).json({ error: "Failed to retrieve recipes id" });
+        });
+});
+
+/* USer */
+
+app.post('/users', (req, res) => {
+    User
+        .create(req.body)
+        .then((createUser) => {
+            console.log("Users creat");
+            res.status(201).json(createUser);
+        })
+        .catch((error) => {
+            console.log("Error while creating the users", err.message);
+            res.status(500).json({ error: "Internal Server Error, not create users" });
+        });
+});
+
+app.get('/users', (req, res) => {
+    User
+        .find({})
+        .then((users) => {
+            res.status(200).json(users);
+        })
+        .catch((error) => {
+            console.log("Error while find the users", err.message);
+            res.status(500).json({ error: "Failed to retrieve users" });
         });
 });
 
