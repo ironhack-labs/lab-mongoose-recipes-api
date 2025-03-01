@@ -16,6 +16,10 @@ const recipeSchema = new mongoose.Schema({
     enum: ["Easy Peasy", "Amateur Chef", "UltraPro Chef"]
   },
   ingredients: [String],
+  cuisine: {
+    type: String,
+    required: true
+  },
   image: {
     type: String,
     default: "https://images.media-allrecipes.com/images/75131.jpg"

@@ -42,6 +42,7 @@ app.post("/recipes", async (req, res) => {
             instructions: req.body.instructions,
             level: req.body.level,
             ingredients: req.body.ingredients,
+            cuisine: req.body.cuisine,
             image: req.body.image,
             duration: req.body.duration,
             isArchived: req.body.isArchived,
